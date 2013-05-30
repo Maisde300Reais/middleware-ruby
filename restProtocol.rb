@@ -6,17 +6,25 @@ class RestProtocol
 
   def send_message(endpoint, invocation)
 
-    client = Savon.client(wsdl: endpoint)
+    resource = RestClient::Resource.new endpoint
 
-    response = client.call(:"#{invocation.method}", message: invocation.params)
+    if invocation.method == "get"
+      resource.get
+    elsif invocation.method == "post"
+      resource.post invocation.params
+    elsif invocation.method == "delete"
+      resource.delete
+    elsif invocation.method == "put"
+      resource.put invocation.params
+    end
 
   end
 
-  def get_operations(endpoint)
-
-    client = Savon.client(wsdl: endpoint)
-    client.operations
-  
-  end
 
 end
+
+def test
+
+end
+
+test
