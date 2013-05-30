@@ -6,10 +6,10 @@ module Leaseable
       loop {
         if Time.now - @startTime >= time
           monitor.leaseExpired(self)
-          Thread.stop
+          break
         end
 
-        sleep 0.1
+        sleep 0.3
       }
     end
   end
@@ -33,5 +33,6 @@ monitor = Monitor.new
 
 foo = Foo.new
 foo.startLease(monitor, 1)
-sleep 2
 
+loop {
+}
