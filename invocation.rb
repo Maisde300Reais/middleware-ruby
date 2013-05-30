@@ -1,14 +1,9 @@
-class Invocation
-  attr_accessor :method, :params
-
-  @params={}
-
-  def initialize(method="", params="")
-    @method = method
-    @params = params
+class Invocation < Hash
+  def _dump level
+    [@name, @version].join ':'
   end
 
-  def add_param (param_name, param)
-    @params[param_name]= param
+  def self._load args
+    new(*args.split(':'))
   end
 end

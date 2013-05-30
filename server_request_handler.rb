@@ -36,9 +36,11 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
 
           if @routes[request.path]
             if @routes[request.path]["#{method}"]
+              message = Marshaller.demarshall(request)
+
               response.status = 200
               response['Content-Type'] = "text/html"
-              response.body = "uheuehueheuhe #{method} " + request.path
+              response.body = Invoker.invoke(message)
 
               return
             end
