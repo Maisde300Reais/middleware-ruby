@@ -30,3 +30,4 @@ def test
   puts c.send_message(endpoint, invocation)
 end
 
+test

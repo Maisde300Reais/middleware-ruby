@@ -1,4 +1,12 @@
 class Invocation < Hash
+
+  def initialize(method="", params={})
+    self["method"]=method
+    params.each do |key, value|
+      self[key]= value
+    end
+  end
+
   def _dump level
     [@name, @version].join ':'
   end
@@ -13,5 +21,11 @@ class Invocation < Hash
 
   def method
     self["method"]
+  end
+
+  def params
+    result = self
+    result.delete("method")
+    result
   end
 end
