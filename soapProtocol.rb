@@ -21,13 +21,16 @@ class SoapProtocol
 
 end
 
-sp = SoapProtocol.new
+def teste
+  sp = SoapProtocol.new
 
-invocation = Invocation.new
+  invocation = Invocation.new
 
-invocation.add_param "CityName", "Natal"
-invocation.add_param "CountryName", "Brazil"
+  invocation.add_param "CityName", "Natal"
+  invocation.add_param "CountryName", "Brazil"
 
-invocation.method = "get_weather"
+  invocation.method = "get_weather"
 
-puts sp.send_message "http://www.webservicex.net/globalweather.asmx?WSDL", invocation
+  puts sp.send_message "http://www.webservicex.net/globalweather.asmx?WSDL", invocation
+
+end
