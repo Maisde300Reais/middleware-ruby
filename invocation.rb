@@ -1,9 +1,11 @@
 class Invocation
   attr_accessor :method, :params
 
-  def initialize
-    @method=""
-    @params = {}
+  @params={}
+
+  def initialize(method="", params="")
+    @method = method
+    @params = params
   end
 
   def add_param (param_name, param)
