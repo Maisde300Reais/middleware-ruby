@@ -1,21 +1,37 @@
 module Leaseable
-	attr_reader :bornTime, :timeToLease
+  def startLease(monitor, time)
+    @startTime = Time.now
 
-	def initialize (timeToLease = 5)
-		@bornTime = Time.now
-		@timeToLease = timeToLease
-	end
+    Thread.new do
+      loop {
+        if Time.now - @startTime >= time
+          monitor.leaseExpired(self)
+          Thread.stop
+        end
 
+        sleep 0.1
+      }
+    end
+  end
+
+  def renewLease
+    @startTime = Time.now
+  end
+end
+
+class Monitor
+  def leaseExpired(obj)
+    puts "Lease ended: " + obj.inspect
+  end
 end
 
 class Foo
-include Leaseable
+  include Leaseable
 end
 
-f = Foo.new()
+monitor = Monitor.new
 
-while ((Time.now - f.bornTime) < f.timeToLease) do
-	puts "oi"
-end
+foo = Foo.new
+foo.startLease(monitor, 1)
+sleep 2
 
-puts (Time.now - f.bornTime)
