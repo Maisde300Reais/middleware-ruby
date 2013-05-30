@@ -7,4 +7,8 @@ gem "savon"
 
 #http://savonrb.com/version2.html
 
-# gem "rails"
+#Serviços REST;
+
+gem "rest-client"
+
+#https://github.com/adamwiggins/rest-client
