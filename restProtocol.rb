@@ -33,6 +33,6 @@ r = RestProtocol.new
 
 invocation = Invocation.new("post", {"CityName"=>"Natal", "CountryName"=> "Brazil"})
 
-endpoint = "http://www.webservicex.net/globalweather.asmx?WSDL"
+endpoint = "globalweather.asmx/GetWeather"
 
 puts r.send_message(endpoint, invocation)
