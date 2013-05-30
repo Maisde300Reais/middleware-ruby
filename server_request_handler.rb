@@ -39,13 +39,17 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
               response.status = 200
               response['Content-Type'] = "text/html"
               response.body = "uheuehueheuhe #{method} " + request.path
+
+              return
             end
           end
+
+          response.status = 404
+          response['Content-Type'] = "text/html"
+          response.body = "Not found"
         end
       EOMETHDEF
     end
-
-
 
     print_routes
   end
