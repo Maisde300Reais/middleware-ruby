@@ -13,8 +13,6 @@ class ServerRequestHandler
     
     @server.mount "/", Router
 
-    #Router.get_instance(@server).print_routes
-
     trap("INT"){ @server.shutdown }
 
     @server.start
@@ -26,8 +24,29 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
   def initialize(server)
     super(server)
     @routes = {}
-
     register_paths
+
+    http_methods = ["GET", "PUT", "POST", "DELETE"]
+
+    http_methods.each do |method|
+      Router.class_eval <<-EOMETHDEF
+        def do_#{method}(*args)
+          request = args[0]
+          response = args[1]
+
+          if @routes[request.path]
+            if @routes[request.path]["#{method}"]
+              response.status = 200
+              response['Content-Type'] = "text/html"
+              response.body = "uheuehueheuhe #{method} " + request.path
+            end
+          end
+        end
+      EOMETHDEF
+    end
+
+
+
     print_routes
   end
 
@@ -35,31 +54,17 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
     File.open("config/routes.config", "r").each(sep="\n") do |line|
       http_method, url, remote_method = line.split
 
-      @routes[url] = [http_method, remote_method]
+      @routes[url] ||= {}
+      @routes[url][http_method] = remote_method
     end
   end
 
   def print_routes
     puts @routes
-  end
-
-  def do_GET(request, response)
-    puts request.inspect
-    puts response.inspect
-        puts @routes
-
-  end
-
-  def do_POST(request, response)
-    puts request.inspect
-    puts response.inspect
-        puts @routes
-
-  end
+  end 
 end
 
 if $0 == __FILE__ then
   srh = ServerRequestHandler.new
   srh.start
-  srh.listen
 end
