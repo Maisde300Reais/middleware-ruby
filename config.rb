@@ -1,6 +1,7 @@
 require 'singleton'
 
 require_relative 'soapProtocol'
+require_relative 'restProtocol'
 
 class ConfigClass
   include Singleton

@@ -1,6 +1,6 @@
 require 'rest_client'
 
-require_relative 'Invocation'
+require_relative 'invocation'
 
 class RestProtocol
 
@@ -32,5 +32,3 @@ def test
 
   puts r.send_message(endpoint, invocation)
 end
-
-

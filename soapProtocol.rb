@@ -1,6 +1,6 @@
 require 'savon'
 
-require_relative 'Invocation'
+require_relative 'invocation'
 
 class SoapProtocol
 

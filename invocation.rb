@@ -28,4 +28,12 @@ class Invocation < Hash
     result.delete("method")
     result
   end
+
+  def add_param(key, value)
+    self[key] = value
+  end
+
+  def get_param(key)
+    self[key]
+  end
 end
