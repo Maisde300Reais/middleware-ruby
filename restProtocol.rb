@@ -24,15 +24,13 @@ class RestProtocol
 end
 
 def test
+  r = RestProtocol.new
 
+  invocation = Invocation.new("post", {"CityName"=>"Natal", "CountryName"=> "Brazil"})
+
+  endpoint = "http://www.webservicex.com/globalweather.asmx/GetWeather"
+
+  puts r.send_message(endpoint, invocation)
 end
 
-test
 
-r = RestProtocol.new
-
-invocation = Invocation.new("post", {"CityName"=>"Natal", "CountryName"=> "Brazil"})
-
-endpoint = "globalweather.asmx/GetWeather"
-
-puts r.send_message(endpoint, invocation)

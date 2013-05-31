@@ -26,6 +26,8 @@ def test
 
   invocation = Invocation.new("get_weather", {"CityName"=>"Natal", "CountryName"=> "Brazil"})
 
+
+  puts  invocation.method
   puts sp.send_message "http://www.webservicex.net/globalweather.asmx?WSDL", invocation
 
 end

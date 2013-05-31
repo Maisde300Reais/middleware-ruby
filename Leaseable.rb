@@ -33,7 +33,7 @@ class Monitor
     end
   end
 
-  def conceed_lease(obj, lease_time)
+  def grant_lease(obj, lease_time)
     obj.start_lease(lease_time)
     @monitored_objects << obj
   end
@@ -54,9 +54,9 @@ foo = Foo.new
 foo2 = Foo.new
 foo3 = Foo.new
 
-monitor.conceed_lease foo, 1
-monitor.conceed_lease foo2, 2
-monitor.conceed_lease foo3, 3
+monitor.grant_lease foo, 1
+monitor.grant_lease foo2, 2
+monitor.grant_lease foo3, 3
 
 monitor.start_verify_leases
 

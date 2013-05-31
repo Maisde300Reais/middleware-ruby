@@ -1,4 +1,5 @@
 class Invocation < Hash
+<<<<<<< Updated upstream
 
   def initialize(method="", params={})
     self["method"]=method
@@ -15,6 +16,8 @@ class Invocation < Hash
     new(*args.split(':'))
   end
 
+=======
+>>>>>>> Stashed changes
   def method=(method)
     self["method"] = method
   end
