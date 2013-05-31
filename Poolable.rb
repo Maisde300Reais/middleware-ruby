@@ -15,15 +15,15 @@ module Poolable
 	def release_obj
 	end
 
-	#**********************************************************#
-	#***métodos abaixo ainda não foram implementados na pool***#
-	#**********************************************************#
-
 	#metodo para retirar um objeto da pool
 	#objeto retirado da pool entrará num estado de "trabalhando"
 	def acquire_obj
 	end
 
+	#**********************************************************#
+	#***métodos abaixo ainda não foram implementados na pool***#
+	#**********************************************************#
+	
 	#metodo para criar novos objetos na pool
 	#este metodo deve ser utilizado quando a pool está vazia
 	#provavelmente um pool manager decidirá o que fazer
