@@ -2,18 +2,6 @@ module Leaseable
   def start_lease(time)
     @startTime = Time.now
     @time = time
-=begin
-    Thread.new do
-      loop {
-        if Time.now - @startTime >= @time
-          monitor.leaseExpired(self)
-          break
-        end
-
-        sleep 0.3
-      }
-    end
-=end
   end
 
   def expired_lease?
