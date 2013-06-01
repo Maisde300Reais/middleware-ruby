@@ -22,13 +22,13 @@ class Pool
 			@available_objects << object
 			@actual_size = @actual_size +1
 		else
-			puts "a pool esta cheia -- aumentar capacidade?!"
+			:full
 		end		
 	end
 
 	def acquire
 		if @available_objects.empty?
-			puts "pool vazia -- criar novo objeto e aumentar capacidade?!"
+			:empty
 		else
 			temporary_object = @available_objects[0]
 			@available_objects.shift
@@ -46,7 +46,6 @@ class Pool
 	private_class_method :new
 end
 
-=begin testando
 class Foo
 	attr_accessor :id
 	def initialize(n)
@@ -65,4 +64,4 @@ user1 = pool.acquire
 user2 = pool.acquire
 pool.release(user1)
 pool.release(user2)
-=end
+puts pool.inspect
