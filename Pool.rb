@@ -52,7 +52,7 @@ class Foo
     @id = n
   end
 end
-=begin
+=begin testando
 obj1 = Foo.new("1")
 obj2 = Foo.new("2")
 
