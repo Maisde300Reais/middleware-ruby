@@ -1,3 +1,5 @@
+require_relative "Poolable"
+
 class Pool
 
 	def initialize(pool_max_size = 10)
@@ -21,6 +23,7 @@ class Pool
 		if @actual_size < @max_size
 			@available_objects << object
 			@actual_size = @actual_size +1
+			object.pool_id = @actual_size
 		else
 			:full
 		end		
@@ -47,14 +50,11 @@ class Pool
 end
 
 class Foo
-	attr_accessor :id
-	def initialize(n)
-    @id = n
-  end
+	include Poolable
 end
 =begin testando
-obj1 = Foo.new("1")
-obj2 = Foo.new("2")
+obj1 = Foo.new
+obj2 = Foo.new
 
 pool = Pool.get_instance
 pool.add_object(obj1)
@@ -62,7 +62,10 @@ pool.add_object(obj2)
 
 user1 = pool.acquire
 user2 = pool.acquire
+
 pool.release(user1)
 pool.release(user2)
+
 puts pool.inspect
+
 =end
