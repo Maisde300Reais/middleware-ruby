@@ -19,7 +19,7 @@ module Leaseable
 
   #retorna :delete caso deseje apagar, :renew para renovar | default: delete
   def lease_expired
-    puts "Removing " + self.inspect
+    puts "Deleting " + self.inspect
     return :delete
   end
 end

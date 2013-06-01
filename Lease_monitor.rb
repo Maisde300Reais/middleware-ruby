@@ -1,6 +1,7 @@
 require_relative "Leaseable"
 
-class Monitor
+class LeaseMonitor
+  include Singleton
 
   def initialize
     @monitored_objects = []
@@ -22,6 +23,10 @@ class Monitor
   def start_verify_leases
     Thread.new do
       loop {
+        if @monitored_objects.empty?
+          Thread.stop
+        end
+
         @monitored_objects.each do |obj|
           if obj.expired_lease?
             lease_expired(obj)
@@ -33,6 +38,10 @@ class Monitor
     end
   end
 
+  def num_objects
+    @monitored_objects.length
+  end
+
 end
 
 #
@@ -40,21 +49,21 @@ class Foo
   include Leaseable
 end
 
-monitor = Monitor.new
+# monitor = LeaseMonitor.new
 
-foo = Foo.new
-foo2 = Foo.new
-foo3 = Foo.new
+# foo = Foo.new
+# foo2 = Foo.new
+# foo3 = Foo.new
 
-monitor.add_to_monitor(foo)
-monitor.add_to_monitor(foo2)
-monitor.add_to_monitor(foo3)
+# monitor.add_to_monitor(foo)
+# monitor.add_to_monitor(foo2)
+# monitor.add_to_monitor(foo3)
 
-foo.start_lease(1)
-foo2.start_lease(2)
-foo3.start_lease(3)
+# foo.start_lease(1)
+# foo2.start_lease(2)
+# foo3.start_lease(3)
 
-monitor.start_verify_leases
+# monitor.start_verify_leases
 
-loop {
-}
+# loop {
+# }

@@ -6,6 +6,7 @@ require_relative 'config'
 require_relative 'qos_observer'
 require_relative 'extension_contexters'
 require_relative 'middleware'
+require_relative 'Leaseable'
 
 class Requestor
   include Singleton
@@ -18,10 +19,17 @@ class Requestor
     @qos_observer = Quality_of_Service_Observer.instance
   end
 
-  def invoke(obj, method, params)
-    
+  def invoke(obj, method, params = {})
+    http_method, url = Middleware.instance.objects_to_routes[obj + "#" + method].split(" ")
 
-    @client_request_handler.send_message(@c.endpoint, invocation)
+    invocation = {
+      endpoint: @c.endpoint,
+      http_action: http_method,
+      url: url,
+      params: params
+    }
+
+    @client_request_handler.send_message(invocation)
   end
 
 end
@@ -29,7 +37,7 @@ end
 def test
   
   r = Requestor.instance
-
-  puts r.invoke("library", "get_potato")
-
+  r.invoke("library", "get_potato")
 end
+
+test
