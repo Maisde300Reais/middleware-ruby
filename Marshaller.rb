@@ -2,12 +2,6 @@ require 'json'
 
 class Marshaller
 
-  attr_accessor :lol
-
-  def initialize(nome)
-    @lol=5
-  end
-
   def demarshall(message)
 
     json_object = JSON.parse(message)
