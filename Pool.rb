@@ -52,7 +52,7 @@ class Foo
     @id = n
   end
 end
-
+=begin
 obj1 = Foo.new("1")
 obj2 = Foo.new("2")
 
@@ -65,3 +65,4 @@ user2 = pool.acquire
 pool.release(user1)
 pool.release(user2)
 puts pool.inspect
+=end
