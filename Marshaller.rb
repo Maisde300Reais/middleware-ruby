@@ -16,7 +16,7 @@ class Marshaller
         params << param
       end
 
-      instance=  klass.new(params.each)
+      instance=  klass.new(params.each.map {|param|param})
 
       return instance
 
