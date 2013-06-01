@@ -2,17 +2,21 @@ require 'json'
 
 class Marshaller
 
-  attr_accessor :lol, :hue
-
-  def initialize(lol)
-    @lol=lol
-    @hue=1213
-  end
-
   def demarshall(message)
+
     json_object = JSON.parse(message)
 
-    puts json_object
+    json_object.each do |class_name, params|
+
+      klass = Object.const_get(class_name.to_s.capitalize)
+
+      klass.inspect
+
+      params.each do |param_name, param| 
+        puts param_name
+      end
+    end
+
   end
 
   def marshall(object)
@@ -33,12 +37,8 @@ end
 =begin
 m = Marshaller.new(5)
 
-puts m.marshall(m)
 
-hue = {}
-
-hue["lol"] = "5"
-hue2="{\"key\": \"a string\"}"
 m.demarshall(  m.marshall(m))
-
 =end
+
+  
