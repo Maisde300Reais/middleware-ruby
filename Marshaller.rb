@@ -15,9 +15,8 @@ class Marshaller
       attributes.each do |param_name, param| 
         params << param
       end
-      
-      instance = klass.new(params.first)
 
+      instance = klass.new(params.first)
       return instance
 
     end
