@@ -46,7 +46,7 @@ class Pool
 	private_class_method :new
 end
 
-#abaixo é só o que usei pra testar
+=begin testando
 class Foo
 	attr_accessor :id
 	def initialize(n)
@@ -65,3 +65,4 @@ user1 = pool.acquire
 user2 = pool.acquire
 pool.release(user1)
 pool.release(user2)
+=end
