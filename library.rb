@@ -1,6 +1,6 @@
 class Library
   def get_potato(potato)
-    puts "Metodo potato da classe Library escrevendo: " + hue
+    '{potato: "hue"}'
   end
 
   def post_potato(potato)
