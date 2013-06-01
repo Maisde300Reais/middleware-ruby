@@ -1,7 +1,8 @@
 class Pool
 
-	def initialize(pool_size = 10)
-		@size = pool_size
+	def initialize(pool_max_size = 10)
+		@max_size = pool_max_size
+		@actual_size = 0
 		@working_objects = []
 		@available_objects = []
 	end
@@ -16,9 +17,18 @@ class Pool
 		@size = new_size
 	end
 
+	def add_object(object)
+		if @actual_size < @max_size
+			@available_objects << object
+			@actual_size = @actual_size +1
+		else
+			puts "a pool esta cheia -- aumentar capacidade?!"
+		end		
+	end
+
 	def acquire
 		if @available_objects.empty?
-			puts "pool vazia -- criar novo objeto?!"
+			puts "pool vazia -- criar novo objeto e aumentar capacidade?!"
 		else
 			temporary_object = @available_objects[0]
 			@available_objects.shift
@@ -28,12 +38,9 @@ class Pool
 	end
 
 	def release(object)
-		temporary_object = @working_objects.delete(object)
-		@available_objects << temporary_object
-	end
-
-	def add_object(object)
-		@available_objects << object
+		if temporary_object = @working_objects.delete(object)
+			@available_objects << temporary_object
+		end	
 	end
 
 	private_class_method :new
@@ -46,6 +53,7 @@ class Foo
     @id = n
   end
 end
+
 obj1 = Foo.new("1")
 obj2 = Foo.new("2")
 
@@ -55,6 +63,5 @@ pool.add_object(obj2)
 
 user1 = pool.acquire
 user2 = pool.acquire
-puts user1.id
-puts user2.id
+pool.release(user1)
 pool.release(user2)
