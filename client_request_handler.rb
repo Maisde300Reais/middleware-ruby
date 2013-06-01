@@ -11,7 +11,7 @@ class Client_Request_Handler
   end
 
   def send_message(endpoint, invocation)
-    message_protocol.send_message(endpoint, invocation)
+    @message_protocol.send_message(endpoint, invocation)
   end
 
 end

@@ -11,6 +11,7 @@ class ServerRequestHandler
     root = File.expand_path '~/public_html'
     @server = WEBrick::HTTPServer.new(:Port => 8000)
     
+    @server.mount "/routes", WEBrick::HTTPServlet::FileHandler, './server/config/routes.config'
     @server.mount "/", Router
 
     trap("INT"){ @server.shutdown }
@@ -23,7 +24,6 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
 
   def initialize(server)
     super(server)
-    @routes = {}
     register_paths
 
     http_methods = ["GET", "PUT", "POST", "DELETE"]
@@ -54,15 +54,6 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
     end
 
     print_routes
-  end
-
-  def register_paths
-    File.open("config/routes.config", "r").each(sep="\n") do |line|
-      http_method, url, remote_method = line.split
-
-      @routes[url] ||= {}
-      @routes[url][http_method] = remote_method
-    end
   end
 
   def print_routes

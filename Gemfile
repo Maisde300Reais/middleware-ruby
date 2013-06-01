@@ -1,6 +1,8 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
+gem 'json'
+
 #Serviços SOAP:
 
 gem "savon"
