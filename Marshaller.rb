@@ -2,19 +2,30 @@ require 'json'
 
 class Marshaller
 
+  attr_accessor :lol
+
+  def initialize(nome)
+    @lol=5
+  end
+
   def demarshall(message)
 
     json_object = JSON.parse(message)
 
-    json_object.each do |class_name, params|
+    json_object.each do |class_name, attributes|
 
-      klass = Object.const_get(class_name.to_s.capitalize)
+      klass = Object.const_get(class_name.to_s.capitalize)  
 
-      klass.inspect
+      params=[]      
 
-      params.each do |param_name, param| 
-        puts param_name
+      attributes.each do |param_name, param| 
+        params << param
       end
+
+      instance=  klass.new(params.each)
+
+      return instance
+
     end
 
   end
@@ -37,8 +48,7 @@ end
 =begin
 m = Marshaller.new(5)
 
-
-m.demarshall(  m.marshall(m))
+puts m.demarshall(  m.marshall(m))
 =end
 
   
