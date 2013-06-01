@@ -2,7 +2,10 @@ require_relative 'invocation'
 
 class Lifecycle_Manager
 
-	require 'singleton'
+	# vários LMs podem ser definidos pra cada estratégia 
+	def initialize()
+
+	end
 
 
 	# invoker informa que precisa de um objeto
@@ -26,5 +29,12 @@ class Lifecycle_Manager
 	# desativar o obj remoto
 		# definir se apaga, joga na pool, etc
 	def deactive()
+
+	end
+
+
+	# para objetos complexos [sem estado trivial]
+		# informa sobre futuros eventos do lifecycle
+	def lifecycle_callback()
 
 	end
