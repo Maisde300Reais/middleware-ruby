@@ -16,7 +16,6 @@ class Requestor
     @client_request_handler.set_protocol @c.protocol
     @extension_contexters = Extension_Contexters.instance
     @qos_observer = Quality_of_Service_Observer.instance
-    @routes_cache = {}
   end
 
   def invoke(obj, method, params)

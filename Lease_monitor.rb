@@ -7,8 +7,12 @@ class Monitor
   end
 
   def lease_expired(obj)
-    puts "Lease ended: " + obj.inspect
-    @monitored_objects.delete obj
+    puts "Lease expired: " + obj.inspect
+
+    result = obj.lease_expired
+
+    @monitored_objects.delete obj if result == :delete
+    obj.renew_lease if result == :renew
   end
 
   def add_to_monitor(obj)
@@ -18,7 +22,6 @@ class Monitor
   def start_verify_leases
     Thread.new do
       loop {
-        
         @monitored_objects.each do |obj|
           if obj.expired_lease?
             lease_expired(obj)
@@ -33,7 +36,6 @@ class Monitor
 end
 
 #
-=begin testando
 class Foo
   include Leaseable
 end
@@ -54,13 +56,5 @@ foo3.start_lease(3)
 
 monitor.start_verify_leases
 
-foo.renew_lease
-sleep 2
-
-foo3.renew_lease
-sleep 1
-foo3.renew_lease
-
 loop {
 }
-=end

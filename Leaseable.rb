@@ -12,8 +12,14 @@ module Leaseable
   end
 
   def renew_lease
+    puts "Renewing lease for: " + self.inspect
     @start_time = Time.now
     @renewals = @renewals + 1
   end
 
+  #retorna :delete caso deseje apagar, :renew para renovar | default: delete
+  def lease_expired
+    puts "Removing " + self.inspect
+    return :delete
+  end
 end

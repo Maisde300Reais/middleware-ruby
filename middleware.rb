@@ -3,12 +3,14 @@ require 'singleton'
 
 class Middleware
   include Singleton
-  attr_accessor :lookup_addresses, :lookup_file_path
-  attr_reader :routes
+
+  attr_reader :lookup_addresses, :lookup_file_path, :routes_to_objects,
+    :objects_to_route
 
   def initialize
     @lookup_addresses = []
-    @routes = {}
+    @routes_to_objects = {}
+    @objects_to_route = {}
     @lookup_file_path = "./client/config/routes.config"
   end
 
@@ -39,14 +41,18 @@ class Middleware
 
       http_method, url, remote_method = line.split
 
-      @routes[url] ||= {}
-      @routes[url][http_method] = remote_method
+      @routes_to_objects[url] ||= {}
+      @routes_to_objects[url][http_method] = remote_method
+      @objects_to_route[remote_method] = http_method + " " + url
     end
   end
 end
 
-mid = Middleware.new
+=begin
+mid = Middleware.instance
 mid.register_lookup("http://localhost:8000/routes")
 mid.get_routes_file
 mid.load_routes_file
-puts mid.routes
+puts mid.objects_to_route
+puts mid.routes_to_objects
+=end
