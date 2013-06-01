@@ -1,8 +1,7 @@
 class Pool
-	attr_accessor :size
 
-	def initialize
-		@size = 5
+	def initialize(pool_size = 10)
+		@size = pool_size
 		@working_objects = []
 		@available_objects = []
 	end
