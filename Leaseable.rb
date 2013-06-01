@@ -1,4 +1,6 @@
 module Leaseable
+  attr_reader :renewals
+
   def start_lease(time_to_live)
     @start_time = Time.now
     @time_to_live = time_to_live

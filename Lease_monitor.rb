@@ -15,7 +15,7 @@ class Monitor
     @monitored_objects << obj
   end 
 
-  def start_verify_leases(verify_interval)
+  def start_verify_leases
     Thread.new do
       loop {
         
@@ -25,7 +25,7 @@ class Monitor
           end
         end
 
-        sleep(verify_interval)
+        sleep(0)
       }
     end
   end
@@ -52,7 +52,7 @@ foo.start_lease(1)
 foo2.start_lease(2)
 foo3.start_lease(3)
 
-monitor.start_verify_leases(0.3)
+monitor.start_verify_leases
 
 foo.renew_lease
 sleep 2
