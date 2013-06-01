@@ -32,8 +32,8 @@ class Monitor
 
 end
 
-#A PARTIR DAQUI É SÓ TESTANDO LEASEABLE E LEASE_MONITOR
-
+#
+=begin testando
 class Foo
   include Leaseable
 end
@@ -63,3 +63,4 @@ foo3.renew_lease
 
 loop {
 }
+=end
