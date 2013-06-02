@@ -23,6 +23,20 @@ class Marshaller
   
   end
 
+  def self.demarshall_request(request)
+    {
+      endpoint: "http://localhost:8000",
+      http_action: request.request_method,
+      url: request.path,
+      method: request.path[(request.path.rindex('/') + 1)..-1],
+      case_pattern: :camel_words,
+      params: {
+        "CityName" => "Natal",
+        "CountryName" => "Brazil"
+      }
+    }
+  end
+
   def marshall(object)
     result = "{\"#{object.class.to_s.downcase}\": {"
 
@@ -33,10 +47,30 @@ class Marshaller
     result =result[0..-3] 
 
     result << "}}"
-
   end
 
 end
+
+class Potato
+  attr_accessor :size, :taste
+
+  def initialize(s, t)
+    @size = s
+    @taste = t
+  end
+
+  def self.json_create(o)
+    new(*o['data'])
+  end
+
+  def to_json(*a)
+    { 'json_class' => self.class.name, 'data' => [size, taste] }.to_json(*a)
+  end
+end
+
+a = Potato.new(1, "nice :D")
+p JSON.dump a
+p JSON.load JSON.dump a
 
 =begin
 m = Marshaller.new(5)
