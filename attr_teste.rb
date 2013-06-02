@@ -50,10 +50,8 @@ class Foo
 end
 
 foo = Foo.new
+puts "inspect-> " + foo.inspect
 buceta = foo.teste
 puts foo.teste.num_of_bucetas
-puts foo.teste.num_of_bucetas
-puts foo.teste.num_of_bucetas
-puts foo.teste.num_of_bucetas
-puts foo.ei.num_of_bucetas
-puts foo.ei.num_of_bucetas
+puts "inspect-> " + foo.inspect
+#só carrega o objeto buceta dentro de Foo qnd o metodo teste eh chamado
