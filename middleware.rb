@@ -19,6 +19,7 @@ class Middleware
     @objects_to_routes = {}
     @lookup_file_path = "./client/config/routes.config"
     @invokers = {"default" => DefaultInvoker.new}
+    @remote_objects = {}
 
     add_to_lease_monitor(@objects_to_routes)
     add_to_lease_monitor(@routes_to_objects)
@@ -31,6 +32,10 @@ class Middleware
 
   def register_invoker(invoker_id, invoker)
     @invokers[invoker_id] = invoker
+  end
+
+  def register_remote_object(id, obj)
+    @remote_objects[id] = obj
   end
 
   def load_routes
@@ -76,6 +81,10 @@ class Middleware
     @invokers[id]
   end
 
+  def get_remote_object(id)
+    @remote_objects[id]
+  end
+
   ##############LIFECYCLE##############
   def add_to_lease_monitor(obj)
     obj.send(:extend, Leaseable)
@@ -84,10 +93,11 @@ class Middleware
 
     LeaseMonitor.instance.start_verify_leases if LeaseMonitor.instance.num_objects >= 1
 
-    obj.start_lease(10)
+    obj.start_lease(1000)
   end
 end
 
+=begin
 mid = Middleware.instance
 mid.register_lookup("http://localhost:2000")
 mid.register_lookup("http://localhost:8000/routes")
@@ -95,3 +105,4 @@ if mid.load_routes
   puts mid.routes_to_objects
   puts mid.objects_to_routes
 end
+=end
