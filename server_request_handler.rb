@@ -15,22 +15,20 @@ class ServerRequestHandler
     root = File.expand_path '~/public_html'
     @server = WEBrick::HTTPServer.new(:Port => 8000)
 
-    @server.mount "/routes", WEBrick::HTTPServlet::FileHandler, './server/config/routes.config'
     @server.mount "/", HttpHandler
 
     trap("INT"){ @server.shutdown }
 
     Thread.new {
       mid = Middleware.instance
-      mid.register_lookup "http://localhost:8000/routes"
+      mid.register_lookup "http://localhost:2000/routes"
       mid.register_remote_object "library", Library.new
 
-      p Benchmark.measure {
-        while not mid.load_routes
-          p 'hue'
-        end
-      }
-
+      while not mid.load_routes
+        puts 'Retrying to load routes'
+        sleep(1)
+      end
+      
       puts mid.routes_to_objects
       puts mid.objects_to_routes
     }

@@ -44,25 +44,31 @@ class Middleware
   end
 
   def _get_routes_file
-    open(@lookup_addresses.first) do |src|
-      open(@lookup_file_path, "wb") do |dst|
-        dst.write(src.read)
+    addrs = @lookup_addresses.cycle
+    count = 0
+
+    addrs.each do |adr|
+      begin
+        puts "Trying to load routes file from: " + adr
+
+        open(adr) do |src|
+          open(@lookup_file_path, "wb") do |dst|
+            dst.write(src.read)
+          end
+        end
+
+        _load_routes_file
+
+        puts "Routes file loaded from: " + adr
+
+        return true
+      rescue
+        puts "Failed to load routes from: " + adr
+        count = (count + 1) % @lookup_addresses.length
+        sleep(1) if count == 0
+        next
       end
     end
-
-    _load_routes_file
-
-    puts "Routes file loaded from: " + @lookup_addresses.first
-
-    return true
-  rescue
-    puts "Failed to get routes from " + @lookup_addresses.first
-
-    @lookup_addresses.shift
-
-    return false if @lookup_addresses.empty?
-
-    load_routes
   end
 
   def _load_routes_file
