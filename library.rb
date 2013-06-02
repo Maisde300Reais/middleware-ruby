@@ -1,9 +1,9 @@
 class Library
-  def get_potato(potato)
-    '{potato: "hue"} ' + potato.inspect
+  def get_all_books(params)
+    "{ book: Livro bolado }" * params["qtd"].to_i
   end
 
-  def post_potato(potato)
-    "{hue}"
+  def add_book(params)
+    "Livro: " + params["nome"] + " adicionado"
   end
 end

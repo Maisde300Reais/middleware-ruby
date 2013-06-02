@@ -19,19 +19,14 @@ class ServerRequestHandler
 
     trap("INT"){ @server.shutdown }
 
-    Thread.new {
-      mid = Middleware.instance
-      mid.register_lookup "http://localhost:2000/routes"
-      mid.register_remote_object "library", Library.new
+    mid = Middleware.instance
+    mid.register_lookup "http://localhost:2000/routes"
+    mid.register_remote_object "library", Library.new
 
-      while not mid.load_routes
-        puts 'Retrying to load routes'
-        sleep(1)
-      end
+    mid.load_routes
       
-      puts mid.routes_to_objects
-      puts mid.objects_to_routes
-    }
+    puts mid.routes_to_objects
+    puts mid.objects_to_routes
 
     @server.start
   end

@@ -1,5 +1,7 @@
 require 'json'
 
+require_relative 'utils'
+
 class Marshaller
 
   def demarshall(message)
@@ -24,16 +26,21 @@ class Marshaller
   end
 
   def self.demarshall_request(request)
+    if request.request_method == "GET"
+      params = request.query
+    else
+      params = Utils.decode_params_url(request.body)
+    end
+
+    puts request.path[(request.path.rindex('/') + 1)...-1]
+
     {
       endpoint: "http://localhost:8000",
       http_action: request.request_method,
       url: request.path,
       method: request.path[(request.path.rindex('/') + 1)..-1],
       case_pattern: :camel_words,
-      params: {
-        "CityName" => "Natal",
-        "CountryName" => "Brazil"
-      }
+      params: params
     }
   end
 

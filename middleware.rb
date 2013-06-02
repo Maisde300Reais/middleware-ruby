@@ -39,11 +39,10 @@ class Middleware
   end
 
   def load_routes
-    _get_routes_file
-    _load_routes_file
+    _get_and_load_routes
   end
 
-  def _get_routes_file
+  def _get_and_load_routes
     addrs = @lookup_addresses.cycle
     count = 0
 
@@ -75,7 +74,7 @@ class Middleware
     File.open(@lookup_file_path, "r").each(sep="\n") do |line|
       next if line.empty? or line.start_with?("#")
 
-      http_method, url, remote_method = line.split
+      http_method, url, remote_method = line.split(" ")
 
       @routes_to_objects[url] ||= {}
       @routes_to_objects[url][http_method] = remote_method

@@ -3,6 +3,8 @@ require 'cgi'
 require 'fileutils'
 require 'tempfile'
 
+require_relative 'utils'
+
 class LookupServer
   def start
     @server = WEBrick::HTTPServer.new(:Port => 2000)
@@ -43,28 +45,14 @@ class RouteManager < WEBrick::HTTPServlet::AbstractServlet
     return 500, "Houve um erro ao tratar os dados"
   end
 
-  def decode_params_url(str)
-    b = CGI::unescape(str)
-    params = {}
-
-    a = b.split("&")
-
-    a.each do |var|
-      key, value = var.split("=")
-      params[key] = value
-    end
-
-    return params
-  end
-
   def do_GET(request, response)
     response.status = 200
-    response['Content-Type'] = "text/html"
+    response['Content-Type'] = "text/plain"
     response.body = IO.read(@filename)  
   end
 
   def do_POST(request, response)
-    params = decode_params_url(request.body)
+    params = Utils.decode_params_url(request.body)
 
     status, body = register_route(params["http_method"], params["url"], params["remote_object"])
 

@@ -12,7 +12,7 @@ class LeaseMonitor
 
     result = obj.lease_expired
 
-    @monitored_objects.delete obj if result == :delete
+    @monitored_objects.delete obj ; obj = nil if result == :delete
     obj.renew_lease if result == :renew
   end
 
@@ -45,9 +45,9 @@ class LeaseMonitor
 end
 
 #
-class Foo
-  include Leaseable
-end
+# class Foo
+#   include Leaseable
+# end
 
 # monitor = LeaseMonitor.new
 
