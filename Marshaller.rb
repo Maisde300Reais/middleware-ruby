@@ -2,9 +2,9 @@ require 'json'
 
 class Marshaller
 
-  def demarshall(message)
+  def demarshall(request)
 
-    json_object = JSON.parse(message)
+    json_object = JSON.parse(request.body)
 
     json_object.each do |class_name, attributes|
 
@@ -33,10 +33,30 @@ class Marshaller
     result =result[0..-3] 
 
     result << "}}"
-
   end
 
 end
+
+class Potato
+  attr_accessor :size, :taste
+
+  def initialize(s, t)
+    @size = s
+    @taste = t
+  end
+
+  def self.json_create(o)
+    new(*o['data'])
+  end
+
+  def to_json(*a)
+    { 'json_class' => self.class.name, 'data' => [size, taste] }.to_json(*a)
+  end
+end
+
+a = Potato.new(1, "nice :D")
+p JSON.dump a
+p JSON.load JSON.dump a
 
 =begin
 m = Marshaller.new(5)

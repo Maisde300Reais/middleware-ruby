@@ -3,6 +3,7 @@ require 'singleton'
 
 require_relative 'Lease_monitor'
 require_relative 'Leaseable'
+require_relative 'default_invoker'
 
 class Middleware
   include Singleton
@@ -16,6 +17,7 @@ class Middleware
     @routes_to_objects = {}
     @objects_to_routes = {}
     @lookup_file_path = "./client/config/routes.config"
+    @invokers = {"default" => DefaultInvoker.new}
 
     add_to_lease_monitor(@objects_to_routes)
     add_to_lease_monitor(@routes_to_objects)
@@ -24,6 +26,10 @@ class Middleware
   ##############IDENTIFICATION##############
   def register_lookup(address)
     lookup_addresses << address
+  end
+
+  def register_invoker(invoker_id, invoker)
+    @invokers[invoker_id] = invoker
   end
 
   def load_routes
@@ -63,6 +69,10 @@ class Middleware
       @routes_to_objects[url][http_method] = remote_method
       @objects_to_routes[remote_method] = http_method + " " + url
     end
+  end
+
+  def get_invoker(id = "default")
+    @invokers[id]
   end
 
   ##############LIFECYCLE##############
