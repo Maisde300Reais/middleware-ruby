@@ -14,7 +14,7 @@ class ServerRequestHandler
     @server = WEBrick::HTTPServer.new(:Port => 8000)
     
     @server.mount "/routes", WEBrick::HTTPServlet::FileHandler, './server/config/routes.config'
-    @server.mount "/", Router
+    @server.mount "/", HttpHandler
 
     trap("INT"){ @server.shutdown }
 
@@ -22,7 +22,7 @@ class ServerRequestHandler
   end
 end
 
-class Router < WEBrick::HTTPServlet::AbstractServlet
+class HttpHandler < WEBrick::HTTPServlet::AbstractServlet
 
   def initialize(server)
     super(server)
@@ -30,7 +30,7 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
     http_methods = ["GET", "PUT", "POST", "DELETE"]
 
     http_methods.each do |method|
-      Router.class_eval <<-EOMETHDEF
+      HttpHandler.class_eval <<-EOMETHDEF
         def do_#{method}(*args)
           middleware = Middleware.instance
 
@@ -39,7 +39,7 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
 
           if middleware.routes_to_objects[request.path]
             if middleware.routes_to_objects[request.path]["#{method}"]
-              message = Marshaller.demarshall(request)
+              message = Marshaller.demarshall_request(request)
 
               response.status = 200
               response['Content-Type'] = "text/json"
@@ -59,12 +59,12 @@ class Router < WEBrick::HTTPServlet::AbstractServlet
 
   def handle_message(message)
     if message[:invoker_id]
-      invoker = Middleware.instance.getInvoker(message[:invoker_id])
+      invoker = Middleware.instance.get_invoker(message[:invoker_id])
     else
-      invoker = Middleware.instance.getInvoker #default invoker
+      invoker = Middleware.instance.get_invoker #default invoker
     end
 
-    invoker.invoke(message)
+    invoker.invoke(message).to_s
   end
 end
 

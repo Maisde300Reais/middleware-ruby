@@ -4,6 +4,7 @@ require 'singleton'
 require_relative 'Lease_monitor'
 require_relative 'Leaseable'
 require_relative 'default_invoker'
+require_relative 'Marshaller'
 
 class Middleware
   include Singleton

@@ -2,9 +2,9 @@ require 'json'
 
 class Marshaller
 
-  def demarshall(request)
+  def demarshall(message)
 
-    json_object = JSON.parse(request.body)
+    json_object = JSON.parse(message)
 
     json_object.each do |class_name, attributes|
 
@@ -21,6 +21,20 @@ class Marshaller
 
     end
   
+  end
+
+  def self.demarshall_request(request)
+    {
+      endpoint: "http://localhost:8000",
+      http_action: request.request_method,
+      url: request.path,
+      method: request.path[(request.path.rindex('/') + 1)..-1],
+      case_pattern: :camel_words,
+      params: {
+        "CityName" => "Natal",
+        "CountryName" => "Brazil"
+      }
+    }
   end
 
   def marshall(object)
