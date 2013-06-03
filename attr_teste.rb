@@ -1,15 +1,5 @@
 class Class
-
-   def lazy_load(name)
-
-      class_eval %Q(
-                  def #{name.keys[0]}
-                    @#{name.keys[0]} ||= #{name.values[0]}.new
-                  end                   
-                 )
-   end
-
-   def lazy_load_bolado(*args)
+   def lazy_load(*args)
 
       args.each do |var|       
         define_method var do
