@@ -34,7 +34,7 @@ end
 =end
 
 class Hue
-  lazy_load_bolado :variavel, :variavel2
+  lazy_load :variavel, :variavel2
 
   def fibonnacci(n)
     return 1 if n <= 2
