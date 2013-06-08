@@ -10,19 +10,19 @@ class Middleware
   include Singleton
 
   #identification
-  attr_reader :lookup_addresses, :lookup_file_path, :routes_to_objects,
-    :objects_to_routes
+  attr_reader :lookup_addresses, :lookup_file_path
 
   def initialize
     @lookup_addresses = []
-    @routes_to_objects = {}
-    @objects_to_routes = {}
     @lookup_file_path = "./client/config/routes.config"
     @invokers = {"default" => DefaultInvoker.new}
+
     @remote_objects = {}
 
-    add_to_lease_monitor(@objects_to_routes)
-    add_to_lease_monitor(@routes_to_objects)
+    self.routes_to_objects
+
+    add_to_lease_monitor(:objects_to_routes, {})
+    add_to_lease_monitor(:routes_to_objects, {})
   end
 
   ##############IDENTIFICATION##############
@@ -61,7 +61,8 @@ class Middleware
         puts "Routes file loaded from: " + adr
 
         return true
-      rescue
+      rescue => exception
+        puts caller
         puts "Failed to load routes from: " + adr
         count = (count + 1) % @lookup_addresses.length
         sleep(1) if count == 0
@@ -76,9 +77,9 @@ class Middleware
 
       http_method, url, remote_method = line.split(" ")
 
-      @routes_to_objects[url] ||= {}
-      @routes_to_objects[url][http_method] = remote_method
-      @objects_to_routes[remote_method] = http_method + " " + url
+      routes_to_objects[url] ||= {}
+      routes_to_objects[url][http_method] = remote_method
+      objects_to_routes[remote_method] = http_method + " " + url
     end
   end
 
@@ -91,14 +92,18 @@ class Middleware
   end
 
   ##############LIFECYCLE##############
-  def add_to_lease_monitor(obj)
+  def add_to_lease_monitor(key, obj)
     obj.send(:extend, Leaseable)
 
-    LeaseMonitor.instance.add_to_monitor(obj)
+    LeaseMonitor.instance.add_to_monitor(key, obj)
 
     LeaseMonitor.instance.start_verify_leases if LeaseMonitor.instance.num_objects >= 1
 
-    obj.start_lease(1000)
+    obj.start_lease(3)
+  end
+
+  def method_missing(m, *args, &block)  
+    LeaseMonitor.instance.send(:[], m.to_sym)
   end
 end
 

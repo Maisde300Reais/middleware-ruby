@@ -7,7 +7,6 @@ require_relative 'utils'
 class Marshaller
 
   def demarshall(message)
-
     json_object = JSON.parse(message)
 
     json_object.each do |class_name, attributes|

@@ -4,20 +4,29 @@ class LeaseMonitor
   include Singleton
 
   def initialize
-    @monitored_objects = []
+    @monitored_objects = {}
   end
 
-  def lease_expired(obj)
-    puts "Lease expired: " + obj.inspect
-
-    result = obj.lease_expired
-
-    @monitored_objects.delete obj ; obj = nil if result == :delete
-    obj.renew_lease if result == :renew
+  def [](key)
+    @monitored_objects[key]
   end
 
-  def add_to_monitor(obj)
-    @monitored_objects << obj
+  def []=(key, obj)
+    add_to_monitor(key, obj)
+  end
+
+  def lease_expired(obj_key)
+    puts "Lease expired: " + @monitored_objects[obj_key].inspect
+
+    result = @monitored_objects[obj_key].lease_expired
+
+    @monitored_objects.delete obj_key if result == :delete
+    @monitored_objects[obj_key].renew_lease if result == :renew
+  end
+
+  def add_to_monitor(key, obj)
+    @monitored_objects[key] = obj
+    obj.key = key
   end 
 
   def start_verify_leases
@@ -27,9 +36,9 @@ class LeaseMonitor
           Thread.stop
         end
 
-        @monitored_objects.each do |obj|
+        @monitored_objects.each do |key, obj|
           if obj.expired_lease?
-            lease_expired(obj)
+            lease_expired(obj.key)
           end
         end
 
@@ -41,7 +50,6 @@ class LeaseMonitor
   def num_objects
     @monitored_objects.length
   end
-
 end
 
 #
