@@ -5,6 +5,7 @@ require_relative 'Lease_monitor'
 require_relative 'Leaseable'
 require_relative 'default_invoker'
 require_relative 'Marshaller'
+require_relative 'attr_teste'
 
 class Middleware
   include Singleton
@@ -19,10 +20,16 @@ class Middleware
 
     @remote_objects = {}
 
-    self.routes_to_objects
-
     add_to_lease_monitor(:objects_to_routes, {})
     add_to_lease_monitor(:routes_to_objects, {})
+  end
+
+  def load_objs_to_routes
+    load_routes
+  end
+
+  def load_routes_to_objs
+    load_routes
   end
 
   ##############IDENTIFICATION##############
@@ -61,8 +68,7 @@ class Middleware
         puts "Routes file loaded from: " + adr
 
         return true
-      rescue => exception
-        puts caller
+      rescue 
         puts "Failed to load routes from: " + adr
         count = (count + 1) % @lookup_addresses.length
         sleep(1) if count == 0
@@ -102,7 +108,7 @@ class Middleware
     obj.start_lease(3)
   end
 
-  def method_missing(m, *args, &block)  
+  def method_missing(m, *args, &block)
     LeaseMonitor.instance.send(:[], m.to_sym)
   end
 end
