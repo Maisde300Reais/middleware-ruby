@@ -1,4 +1,6 @@
 require 'json'
+require 'savon'
+require_relative 'soapProtocol'
 
 require_relative 'utils'
 
@@ -23,6 +25,20 @@ class Marshaller
 
     end
   
+  end
+
+  def self.demarshall_soap_request(operation)
+
+    operation[operation.operation_name].each do |name, param|
+      params[name] =param
+    end
+
+    {
+      endpoint: operation.endpoint,
+      http_action: operation.soap_action,
+      method: operation.operation_name,
+      params: params
+    }
   end
 
   def self.demarshall_request(request)
@@ -58,6 +74,7 @@ class Marshaller
 
 end
 
+=begin
 class Potato
   attr_accessor :size, :taste
 
@@ -78,11 +95,26 @@ end
 a = Potato.new(1, "nice :D")
 p JSON.dump a
 p JSON.load JSON.dump a
+=end
 
 =begin
 m = Marshaller.new(5)
 
 puts m.demarshall(  m.marshall(m))
 =end
+=begin
+sp= SoapProtocol.new
 
+invocation = {
+  endpoint: "http://localhost:8000",
+  http_action: http_method.downcase,
+  method: method,
+  url: url,
+  protocol: :rest,
+  case_pattern: :camel_words,
+  params: params
+}
+
+puts demarshall_soap_request(invocation).inspect
+=end
   
