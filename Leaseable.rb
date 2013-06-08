@@ -1,4 +1,5 @@
 module Leaseable
+  attr_accessor :key
   attr_reader :renewals
 
   def start_lease(time_to_live)
