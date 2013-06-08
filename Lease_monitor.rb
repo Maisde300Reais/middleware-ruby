@@ -1,4 +1,5 @@
 require_relative "Leaseable"
+require 'singleton'
 
 class LeaseMonitor
   include Singleton
@@ -51,6 +52,20 @@ class LeaseMonitor
     @monitored_objects.length
   end
 end
+
+class Foo
+  def method_missing(m, *args, &block)
+    puts "Chamou metodo #{m} com argumentos #{args}"
+
+    if not block.nil?
+      puts "Executando bloco passado"
+      block.call(m)
+    end    
+  end
+end
+
+foo = Foo.new
+foo.huehueuhe("brbrbrbrbrbrb", 1223) { |m| puts "Bloco executado no metodo #{m}" }
 
 #
 # class Foo
