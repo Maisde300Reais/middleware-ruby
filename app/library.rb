@@ -9,7 +9,8 @@ class Library
     @clients={}
   end
 
-  def add_book(book)
+  def add_book(params)
+    book = Book.new(params[:book_id], params[:book_name])
     @books[book.id]=book
   end
 

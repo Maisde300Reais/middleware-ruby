@@ -63,6 +63,7 @@ class Middleware
         return true
       rescue => exception
         puts caller
+        puts exception
         puts "Failed to load routes from: " + adr
         count = (count + 1) % @lookup_addresses.length
         sleep(1) if count == 0
@@ -99,7 +100,7 @@ class Middleware
 
     LeaseMonitor.instance.start_verify_leases if LeaseMonitor.instance.num_objects >= 1
 
-    obj.start_lease(3)
+    obj.start_lease(300)
   end
 
   def method_missing(m, *args, &block)  

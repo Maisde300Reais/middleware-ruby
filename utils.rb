@@ -2,6 +2,9 @@ require 'cgi'
 
 module Utils
   def self.decode_params_url(str)
+
+    puts str
+    
     b = CGI::unescape(str)
     params = {}
 

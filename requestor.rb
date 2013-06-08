@@ -8,11 +8,12 @@ require_relative 'client_request_handler'
 require_relative 'middleware'
 require_relative 'Leaseable'
 require_relative 'library'
+require_relative 'book'
+require_relative 'client'
 
 class Requestor
-  include Singleton
 
-  def initialize
+  def initialize(instance_name="library", class_name=Library.new)
     # @c = ConfigClass.instance
     @client_request_handler = Client_Request_Handler.instance
     # @client_request_handler.set_protocol @c.protocol
@@ -21,7 +22,7 @@ class Requestor
 
     mid = Middleware.instance
     mid.register_lookup "http://localhost:2000/routes"
-    mid.register_remote_object "library", Library.new
+    mid.register_remote_object instance_name, class_name
 
     mid.load_routes
   end
@@ -45,8 +46,18 @@ class Requestor
 end
 
 def test
-  r = Requestor.instance
-  p r.invoke("library", "add_book", {nome: "GIBE B00K PL0X"})
+  r = Requestor.new("library", Library.new)
+  p r.invoke("library", "add_book", {book_name: "Chapeuzinho Vermelho", book_id: "1"})
+
+  p r.invoke("library", "add_client", {client_id: "1", client_name: "Igor"})
+
+  book= Book.new("1", "Chapeuzinho Vermelho")
+
+  client= Client.new("1", "Igor")
+
+  marshaller = Marshaller.new
+
+  p r.invoke("library", "rent_book", {book_id: "1", client_id: "1"})
 end
 
 test
