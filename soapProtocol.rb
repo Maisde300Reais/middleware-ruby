@@ -47,8 +47,6 @@ Hash.send(:include, InvocationHash)
 class SoapProtocol
 
   def send_message(invocation)
-    invocation.soap_action
-
     client = Savon.client(wsdl: invocation.wsdl)
 
     return client.call(:"#{invocation[:method]}", message: invocation[:params])
@@ -59,23 +57,3 @@ class SoapProtocol
     client.operations
   end
 end
-
-def test
-  sp = SoapProtocol.new
-
-  invocation = {
-    endpoint: "http://www.webservicex.com",
-    http_action: "post",
-    url: "/globalweather.asmx",
-    method: "GetWeather",
-    case_pattern: :camel_words,
-    params: {
-      "CityName" => "Natal",
-      "CountryName" => "Brazil"
-    }
-  }
-
-  puts sp.send_message invocation
-end
-
-test

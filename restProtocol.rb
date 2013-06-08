@@ -8,18 +8,6 @@ module InvocationHash
     self[:endpoint] + self[:url]
   end
 
-  def rest_url(case_pattern = :camel_case)
-    if case_pattern == :capitalize_words
-      method = capitalize_words(self[:method])
-    elsif case_pattern == :camel_case
-      method = camel_words(self[:method])
-    else
-      method = self[:method]
-    end
-
-    remote_object_url + "/" + method
-  end
-
   def capitalize_words(str)
     str.split("_").map(&:capitalize).join
   end
@@ -37,30 +25,8 @@ Hash.send(:include, InvocationHash)
 
 class RestProtocol
   def send_message(invocation)
-    resource = RestClient::Resource.new invocation.rest_url(invocation[:case_pattern])
+    resource = RestClient::Resource.new invocation.remote_object_url
 
     return resource.send(invocation[:http_action], invocation[:params])
   end
 end
-
-def test
-  r = RestProtocol.new
-
-  invocation = {
-    endpoint: "http://www.webservicex.com",
-    http_action: "post",
-    url: "/globalweather.asmx",
-    method: "get_weather",
-    case_pattern: :capitalize_words,
-    params: {
-      "CityName" => "Natal",
-      "CountryName" => "Brazil"
-    }
-  }
-
-  puts invocation.rest_url
-
-  puts r.send_message(invocation)
-end
-
-test

@@ -12,7 +12,6 @@ class LookupServer
     trap("INT"){ @server.shutdown }
     @server.start
   end
-
 end
 
 class RouteManager < WEBrick::HTTPServlet::AbstractServlet
