@@ -23,26 +23,6 @@ class Class
    end
 end
 
-=begin 
-class ExpensiveObject
-  def initialize
-    # Expensive stuff here.
-  end
-end
-  
-class Caller
-  def some_method
-    my_object.do_something
-  end
-
-  def my_object
-    # Expensive object is created when my_object is called. Subsequent calls
-    # will return the same object.
-    @my_object ||= ExpensiveObject.new
-  end
-end
-=end
-
 class Hue
   lazy_load_bolado :variavel, :variavel2
 
@@ -63,7 +43,9 @@ end
 
 puts "=============="
 hue = Hue.new
+puts hue.inspect
 p hue.variavel
+puts hue.inspect
 p hue.variavel2
 puts "=============="
 

@@ -58,6 +58,7 @@ class Marshaller
 
 end
 
+
 class Potato
   attr_accessor :size, :taste
 
@@ -75,14 +76,17 @@ class Potato
   end
 end
 
+
 a = Potato.new(1, "nice :D")
 p JSON.dump a
 p JSON.load JSON.dump a
+
 
 =begin
 m = Marshaller.new(5)
 
 puts m.demarshall(  m.marshall(m))
 =end
+
 
   
