@@ -105,7 +105,7 @@ class Middleware
 
     LeaseMonitor.instance.start_verify_leases if LeaseMonitor.instance.num_objects >= 1
 
-    obj.start_lease(3)
+    obj.start_lease(3000)
   end
 
   def method_missing(m, *args, &block)

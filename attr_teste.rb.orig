@@ -12,9 +12,11 @@ class Class
     end  
 
     if params[:load_class]
-      define_method var do
-        @var ||= params[:load_class].new
-      end
+      class_eval %Q(
+        def #{var}
+          @#{var} ||= #{params[:load_class]}.new
+        end            
+      )
     elsif params[:load_method]
       define_method var do
         if self.instance_variable_get("@#{var}".to_sym).nil?
@@ -54,20 +56,20 @@ end
 
 
 
-# foo = Foo.new
-# buceta = foo.teste
-# puts foo.teste.num_of_vacilos
-# puts foo.teste.num_of_vacilos
-# puts foo.teste.num_of_vacilos
-# puts foo.teste.num_of_vacilos
-# puts foo.ei.num_of_vacilos
-# puts foo.ei.num_of_vacilos
-# puts foo.ei.num_of_vacilos
-# puts foo.ei.num_of_vacilos
-# puts foo.chutambo.num_of_vacilos
-# puts foo.chutambo.num_of_vacilos
-# puts foo.chutambo.num_of_vacilos
-# puts foo.chutambo.num_of_vacilos
+foo = Foo.new
+buceta = foo.teste
+puts foo.teste.num_of_vacilos
+puts foo.teste.num_of_vacilos
+puts foo.teste.num_of_vacilos
+puts foo.teste.num_of_vacilos
+puts foo.ei.num_of_vacilos
+puts foo.ei.num_of_vacilos
+puts foo.ei.num_of_vacilos
+puts foo.ei.num_of_vacilos
+puts foo.chutambo.num_of_vacilos
+puts foo.chutambo.num_of_vacilos
+puts foo.chutambo.num_of_vacilos
+puts foo.chutambo.num_of_vacilos
 
 
 =begin
