@@ -1,7 +1,6 @@
 require 'singleton'
 
 class Group_config
-	
 	include Singleton
 
 	attr_accessor :registered

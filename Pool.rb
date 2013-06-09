@@ -26,6 +26,7 @@ class Pool
 	private_class_method :new
 end
 
+=begin
 class Foo
 	attr_accessor :id
 	def initialize(id)
@@ -33,7 +34,8 @@ class Foo
 	end
 end
 
-pool = Pool.get_instance
+
+pool = Pool.instance
 obj1 = Foo.new(3)
 obj2 = Foo.new(219821)
 
@@ -46,3 +48,4 @@ user1 = pool.pick(obj1.id)
 p pool.inspect
 pool.release(obj1.id)
 p pool.inspect
+=end

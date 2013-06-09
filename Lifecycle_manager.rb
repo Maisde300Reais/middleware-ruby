@@ -2,12 +2,12 @@ require_relative 'Pool'
 require_relative 'group_config'
 
 class Lifecycle_manager
-	attr_accessor :hash_register
+	attr_accessor :hash_register, :config, :pool
 
 	def initialize()
 		@remote_objects = {}
 		@hash_register = {}
-		@pool = Pool.get_instance
+		@pool = Pool.instance
 		@config = Group_config.instance
 	end
 	
@@ -89,12 +89,9 @@ manager = Lifecycle_manager.new()
 rebeca = Foo.new(1)
 larissa = Fuu.new(2)
 
-manager.pool.add(larissa)
+manager.pool.add(larissa, larissa.id)
 manager.config.register_class_as(larissa.class, "Passivation")
 manager.config.register_class_as(rebeca.class, "Poolable")
 
-#manager.register_class_as(larissa.class, "Passivation")
-#manager.register_class_as(rebeca.class, "Poolable")
-
-manager.pick_object(larissa, larissa.id)
+puts manager.pick_object(larissa, larissa.id).inspect
 manager.pick_object(rebeca, rebeca.id)
