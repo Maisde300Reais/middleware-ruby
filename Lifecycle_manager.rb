@@ -8,7 +8,7 @@ class Lifecycle_manager
 		@remote_objects = {}
 		@hash_register = {}
 		@pool = Pool.get_instance
-		@config = Group_config.get_instance
+		@config = Group_config.instance
 	end
 	
 	def register_remote_object(unique_id, object)
@@ -89,6 +89,7 @@ manager = Lifecycle_manager.new()
 rebeca = Foo.new(1)
 larissa = Fuu.new(2)
 
+manager.pool.add(larissa)
 manager.config.register_class_as(larissa.class, "Passivation")
 manager.config.register_class_as(rebeca.class, "Poolable")
 

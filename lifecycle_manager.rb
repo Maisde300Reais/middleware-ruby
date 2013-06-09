@@ -7,7 +7,7 @@ class Lifecycle_manager
 	def initialize()
 		@remote_objects = {}
 		@hash_register = {}
-		@pool = Pool.get_instance
+		@pool = Pool.instance
 		@config = Group_config.instance
 	end
 	

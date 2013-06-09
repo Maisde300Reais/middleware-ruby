@@ -1,16 +1,12 @@
+require 'singleton'
 
 class Pool
-	attr_accessor :available, :working
-	
+
+	include Singleton
+
 	def initialize()
 		@available = {}
 		@working = {}
-	end
-
-	@@instance = Pool.new
-
-	def self.get_instance
-		return @@instance
 	end
 
 	def add(object ,unique_id)
@@ -30,7 +26,6 @@ class Pool
 	private_class_method :new
 end
 
-=begin
 class Foo
 	attr_accessor :id
 	def initialize(id)
@@ -51,4 +46,3 @@ user1 = pool.pick(obj1.id)
 p pool.inspect
 pool.release(obj1.id)
 p pool.inspect
-=end
