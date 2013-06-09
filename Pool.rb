@@ -1,6 +1,7 @@
 
 class Pool
-
+	attr_accessor :available, :working
+	
 	def initialize()
 		@available = {}
 		@working = {}
@@ -29,6 +30,7 @@ class Pool
 	private_class_method :new
 end
 
+=begin
 class Foo
 	attr_accessor :id
 	def initialize(id)
@@ -49,3 +51,4 @@ user1 = pool.pick(obj1.id)
 p pool.inspect
 pool.release(obj1.id)
 p pool.inspect
+=end
