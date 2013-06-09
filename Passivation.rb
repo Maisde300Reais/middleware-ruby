@@ -9,7 +9,8 @@ class Passivation
 
 	def passivate(object)
 		file = File.open(object.class.to_s, "r+")
-  		file.write(@marshaller.marshall(object)) 
+  	file.write(@marshaller.marshall(object)) 
+  	file.close
 	end
 
 	def activate(object)
