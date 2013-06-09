@@ -7,6 +7,9 @@ require_relative 'default_invoker'
 require_relative 'Marshaller'
 require_relative 'attr_teste'
 
+require 'net/http'
+require 'uri'
+
 class Middleware
   include Singleton
 
@@ -37,11 +40,34 @@ class Middleware
     lookup_addresses << address
   end
 
+  def get_server(id)
+    addrs = @lookup_addresses.cycle
+
+    addrs.each do |addr|
+      begin
+        str = Net::HTTP.get(URI.parse("http://#{addr}/objects/get_server?id=#{id}"))
+
+        next if str.empty?
+
+        return str[1..-2]
+      rescue 
+        next
+      end
+    end
+  end
+
   def register_invoker(invoker_id, invoker)
     @invokers[invoker_id] = invoker
   end
 
   def register_remote_object(id, obj)
+    lookup_addresses.each do |addr|
+      postData = Net::HTTP.post_form(URI.parse("http://#{addr}/objects/add"),
+       {'id'=> id, 'endpoint' => "localhost:8000"})
+
+      puts postData.body
+    end
+
     @remote_objects[id] = obj
   end
 
