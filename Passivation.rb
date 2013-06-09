@@ -19,7 +19,6 @@ class Passivation
 
 		if File.exists?(name)
 			contents = File.read(name)
-			puts contents
 			@marshaller.demarshall(contents)
 		else
 			:NoSuchObject
