@@ -17,17 +17,12 @@ class ServerRequestHandler
 
     @server.mount "/", HttpHandler
 
-      trap("INT"){ @server.shutdown }
+    trap("INT"){ @server.shutdown }
 
-    Thread.new {
-      mid = Middleware.instance
-      mid.register_lookup "http://localhost:2000/routes"
+    Middleware.instance.register_lookup "localhost:2000"
+    Middleware.instance.register_remote_object "library", Library.new
+    Middleware.instance._load_routes_file
 
-      mid.load_routes
-        
-      puts mid.routes_to_objects
-      puts mid.objects_to_routes 
-    }
 
     @server.start
   end
