@@ -21,7 +21,7 @@ class Lifecycle_manager
   	end
 
 	def pick_object(object, unique_id)
-		strategy = get_strategy(object)
+		strategy = @config.get_strategy(object)
 
 		case strategy
 		when "Lazy"
@@ -37,6 +37,7 @@ class Lifecycle_manager
 			pick_leaseable()
 
 		else
+			puts object.inspect
 			:ObjectClassNotRegistered
 
 		end
@@ -53,19 +54,6 @@ class Lifecycle_manager
 
 	def pick_leaseable()
 		puts "It's leaseable, need to check if its lease has expired, if not expired I will renew it!"
-	end
-
-	################################################################
-	#######                  CONFIGURATION GROUP           #########
-	################################################################
-	#SET strategy for each class here CONFIG GROUP
-	def register_class_as(class_name, strategy)
-		@hash_register[class_name]=strategy
-	end
-
-	#GET strategy for each class here CONFIG GROUP
-	def get_strategy(object)
-		@hash_register[object.class]
 	end
 	
 end
@@ -89,9 +77,8 @@ manager = Lifecycle_manager.new()
 rebeca = Foo.new(1)
 larissa = Fuu.new(2)
 
-manager.pool.add(larissa, larissa.id)
 manager.config.register_class_as(larissa.class, "Passivation")
 manager.config.register_class_as(rebeca.class, "Poolable")
 
-puts manager.pick_object(larissa, larissa.id).inspect
-manager.pick_object(rebeca, rebeca.id)
+manager.pick_object(larissa, larissa.id).inspect
+manager.pick_object(rebeca, rebeca.id).inspect
