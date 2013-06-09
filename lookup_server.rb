@@ -2,18 +2,78 @@ require 'webrick'
 require 'cgi'
 require 'fileutils'
 require 'tempfile'
+require 'json'
 
 require_relative 'utils'
+
+class Lookup
+  include Singleton
+
+  def initialize
+    @remote_objects = {}
+  end
+
+  def register_remote_object(id, endpoint)
+    @remote_objects[id] ||= []
+    @remote_objects[id] << endpoint
+
+    return 200, "Object #{id} registered at endpoint #{endpoint}"
+  end
+
+  def get_all_info
+    return 200, @remote_objects.to_json
+  end
+
+  def servers_by_remote_object(id)
+    return 404, "There is no server which has a object with this id: #{id}" unless @remote_objects[id]
+    return 200, @remote_objects[id].to_json
+  end
+
+  def get_server(id)  
+    return 404, "There is no server which has a object with this id: #{id}" unless @remote_objects[id]
+    return 200, @remote_objects[id].sample.to_json
+  end
+end
 
 class LookupServer
   def start
     @server = WEBrick::HTTPServer.new(:Port => 2000)
-    @server.mount "/routes", RouteManager
+    @server.mount "/objects", LookupHandler
+
     trap("INT"){ @server.shutdown }
     @server.start
   end
 end
 
+class LookupHandler < WEBrick::HTTPServlet::AbstractServlet
+  def do_GET(request, response)
+    if request.path == "/objects/all"
+      status, body = Lookup.instance.get_all_info
+    elsif request.path == "/objects/get_server"
+      status, body = Lookup.instance.get_server(request.query["id"])
+    elsif request.path == "/objects/get_servers"
+      status, body = Lookup.instance.servers_by_remote_object(request.query["id"])
+    end
+
+    response.status = status
+    response['Content-Type'] = "text/html"
+    response.body = body
+  end
+
+  def do_POST(request, response)
+    if request.path == "/objects/add"
+      hash = Utils.decode_params_url(request.body)
+      status, body = Lookup.instance.register_remote_object(hash["id"], hash["endpoint"])
+    end
+
+    response.status = status
+    response['Content-Type'] = "text/html"
+    response.body = body
+  end
+end
+
+
+=begin
 class RouteManager < WEBrick::HTTPServlet::AbstractServlet
   def initialize(server)
     super(server)
@@ -70,6 +130,11 @@ class RouteManager < WEBrick::HTTPServlet::AbstractServlet
     response.body = body
   end
 end
+=end
+
+Lookup.instance.register_remote_object("potato", "localhost:3000")
+Lookup.instance.register_remote_object("potato", "localhost:4000")
+
 
 server = LookupServer.new
 server.start
