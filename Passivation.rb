@@ -20,7 +20,7 @@ class Passivation
 			puts contents
 			@marshaller.demarshall(contents)
 		else
-			:NoSucObject
+			:NoSuchObject
 		end
 
 	end
