@@ -4,12 +4,13 @@ class LoadBalance
     @servers=[]
   end
 
-  def add_server(server)
+  def register_server(server)
     @servers<<server
   end
 
   def get_server(server)
-    @servers.first
+      @servers.first
+    end
   end
 
   def remove_server(server)
@@ -19,5 +20,5 @@ class LoadBalance
   def servers
     @servers.to_s
   end
-  
+
 end
