@@ -1,7 +1,7 @@
 require 'singleton'
 
 class Pool
-attr_accessor :available
+
 	include Singleton
 
 	def initialize()
