@@ -7,11 +7,6 @@ require_relative 'client_request_handler'
 # require_relative 'extension_contexters'
 require_relative 'middleware'
 require_relative 'Leaseable'
-=begin
-require_relative 'library'
-require_relative 'book'
-require_relative 'client'
-=end
 
 class Requestor
 
@@ -19,7 +14,11 @@ class Requestor
     # @c = ConfigClass.instance
     @client_request_handler = Client_Request_Handler.instance
     # @client_request_handler.set_protocol @c.protocol
+
+    #Extension Pattern
     # @extension_contexters = Extension_Contexters.instance
+
+    #Extended Infraestructure Pattern
     # @qos_observer = Quality_of_Service_Observer.instance
 
     mid = Middleware.instance
