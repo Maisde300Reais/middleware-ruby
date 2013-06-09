@@ -11,22 +11,23 @@ class ServerRequestHandler
   def initialize
   end
 
-  def start (instance_name, class_instance)
+  def start 
     root = File.expand_path '~/public_html'
     @server = WEBrick::HTTPServer.new(:Port => 8000)
 
     @server.mount "/", HttpHandler
 
-    trap("INT"){ @server.shutdown }
+      trap("INT"){ @server.shutdown }
 
-    mid = Middleware.instance
-    mid.register_lookup "http://localhost:2000/routes"
-    mid.register_remote_object instance_name, class_instance
+    Thread.new {
+      mid = Middleware.instance
+      mid.register_lookup "http://localhost:2000/routes"
 
-    mid.load_routes
-      
-    puts mid.routes_to_objects
-    puts mid.objects_to_routes
+      mid.load_routes
+        
+      puts mid.routes_to_objects
+      puts mid.objects_to_routes 
+    }
 
     @server.start
   end
@@ -77,3 +78,6 @@ class HttpHandler < WEBrick::HTTPServlet::AbstractServlet
     invoker.invoke(message).to_s
   end
 end
+
+
+ServerRequestHandler.new.start

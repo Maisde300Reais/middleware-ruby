@@ -1,4 +1,4 @@
-class LoadBalance
+class LoadBalancer
 
   def initialize
     @servers=[]
