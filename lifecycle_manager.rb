@@ -1,31 +1,37 @@
 require_relative 'Pool'
+require_relative 'group_config'
 
 class Lifecycle_manager
-	attr_accessor :hash
+	attr_accessor :hash_register, :config
 
 	def initialize()
+		@remote_objects = {}
 		@hash_register = {}
-		@passivated_objects = {}
-		@pool = Pool.get_instance()
+		@pool = Pool.get_instance
+		@config = Group_config.instance
 	end
+	
+	def register_remote_object(unique_id, object)
+    	@remote_objects[unique_id] = object
+  	end
 
-	#set strategy for each class here
-	def register_object_as(class_name, strategy)
-		@hash[class_name]=strategy
-	end
+  	def get_remote_object(unique_id)
+		object = @remote_objects[unique_id]
+		return pick_object(object, unique_id)
+  	end
 
 	def pick_object(object, unique_id)
-		strategy = @hash_register[object.class]
+		strategy = get_strategy(object)
 
 		case strategy
 		when "Lazy"
-			puts "It's Lazy, f*ck this sh*t, call it now!"
+			return @remote_objects[unique_id]
 
 		when "Passivation"
 			pick_persistable()
 
 		when "Poolable"
-			pick_poolable()
+			pick_poolable(unique_id)
 
 		when "Leaseable"
 			pick_leaseable()
@@ -36,8 +42,9 @@ class Lifecycle_manager
 		end
 	end
 
-	def pick_poolable()
+	def pick_poolable(unique_id)
 		puts "It's poolable, need to check if it is already at work or available"
+		object = @pool.pick(unique_id)
 	end
 
 	def pick_persistable()
@@ -46,6 +53,19 @@ class Lifecycle_manager
 
 	def pick_leaseable()
 		puts "It's leaseable, need to check if its lease has expired, if not expired I will renew it!"
+	end
+
+	################################################################
+	#######                  CONFIGURATION GROUP           #########
+	################################################################
+	#SET strategy for each class here CONFIG GROUP
+	def register_class_as(class_name, strategy)
+		@hash_register[class_name]=strategy
+	end
+
+	#GET strategy for each class here CONFIG GROUP
+	def get_strategy(object)
+		@hash_register[object.class]
 	end
 	
 end
@@ -64,23 +84,16 @@ class Fuu
 	end
 end
 
-class Chutambo
-	attr_accessor :attack
-	def initialize(id)
-		@attack = attack
-	end
-end
-
 manager = Lifecycle_manager.new()
 
 rebeca = Foo.new(1)
 larissa = Fuu.new(2)
-igor = Chutambo.new("porrada")
 
-manager.register_object_as(larissa.class, "Passivation")
-manager.register_object_as(rebeca.class, "Lazy")
-manager.register_object_as(igor.class, "Poolable")
+manager.config.register_class_as(larissa.class, "Passivation")
+manager.config.register_class_as(rebeca.class, "Poolable")
 
-manager.pick_object(larissa, igor.attack)
-manager.pick_object(rebeca, igor.attack)
-manager.pick_object(igor, igor.attack)
+#manager.register_class_as(larissa.class, "Passivation")
+#manager.register_class_as(rebeca.class, "Poolable")
+
+manager.pick_object(larissa, larissa.id)
+manager.pick_object(rebeca, rebeca.id)
