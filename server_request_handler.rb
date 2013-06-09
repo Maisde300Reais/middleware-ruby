@@ -3,7 +3,7 @@ require 'time'
 require 'benchmark'
 
 require_relative 'middleware'
-require_relative 'library'
+require_relative 'app_library/library'
 
 class ServerRequestHandler
   include WEBrick
@@ -11,7 +11,7 @@ class ServerRequestHandler
   def initialize
   end
 
-  def start
+  def start (instance_name, class_instance)
     root = File.expand_path '~/public_html'
     @server = WEBrick::HTTPServer.new(:Port => 8000)
 
@@ -21,7 +21,7 @@ class ServerRequestHandler
 
     mid = Middleware.instance
     mid.register_lookup "http://localhost:2000/routes"
-    mid.register_remote_object "library", Library.new
+    mid.register_remote_object instance_name, class_instance
 
     mid.load_routes
       
@@ -76,9 +76,4 @@ class HttpHandler < WEBrick::HTTPServlet::AbstractServlet
 
     invoker.invoke(message).to_s
   end
-end
-
-if $0 == __FILE__ then
-  srh = ServerRequestHandler.new
-  srh.start
 end

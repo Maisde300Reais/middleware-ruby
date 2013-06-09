@@ -7,13 +7,15 @@ require_relative 'client_request_handler'
 # require_relative 'extension_contexters'
 require_relative 'middleware'
 require_relative 'Leaseable'
+=begin
 require_relative 'library'
 require_relative 'book'
 require_relative 'client'
+=end
 
 class Requestor
 
-  def initialize(instance_name="library", class_name=Library.new)
+  def initialize(instance_name, class_name)
     # @c = ConfigClass.instance
     @client_request_handler = Client_Request_Handler.instance
     # @client_request_handler.set_protocol @c.protocol
@@ -44,20 +46,3 @@ class Requestor
   end
 
 end
-
-def test
-  r = Requestor.new("library", Library.new)
-  p r.invoke("library", "add_book", {book_name: "Chapeuzinho Vermelho", book_id: "1"})
-
-  p r.invoke("library", "add_client", {client_id: "1", client_name: "Igor"})
-
-  book= Book.new("1", "Chapeuzinho Vermelho")
-
-  client= Client.new("1", "Igor")
-
-  marshaller = Marshaller.new
-
-  p r.invoke("library", "rent_book", {book_id: "1", client_id: "1"})
-end
-
-test
