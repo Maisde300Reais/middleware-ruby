@@ -1,15 +1,12 @@
+require 'singleton'
 
 class Pool
+
+	include Singleton
 
 	def initialize()
 		@available = {}
 		@working = {}
-	end
-
-	@@instance = Pool.new
-
-	def self.get_instance
-		return @@instance
 	end
 
 	def add(object ,unique_id)
