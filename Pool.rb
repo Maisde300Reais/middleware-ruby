@@ -1,12 +1,9 @@
-require_relative "Poolable"
 
 class Pool
 
-	def initialize(pool_max_size = 10)
-		@max_size = pool_max_size
-		@actual_size = 0
-		@working_objects = []
-		@available_objects = []
+	def initialize()
+		@available = {}
+		@working = {}
 	end
 
 	@@instance = Pool.new
@@ -15,57 +12,40 @@ class Pool
 		return @@instance
 	end
 
-	def set_size(new_size)
-		@size = new_size
+	def add(object ,unique_id)
+		@available[unique_id]=object
 	end
 
-	def add_object(object)
-		if @actual_size < @max_size
-			@available_objects << object
-			@actual_size = @actual_size +1
-			object.pool_id = @actual_size
-		else
-			:full
-		end		
+	def pick(unique_id)
+		object = @available.delete(unique_id)
+		@working[unique_id]=object
 	end
 
-	def acquire
-		if @available_objects.empty?
-			:empty
-		else
-			temporary_object = @available_objects[0]
-			@available_objects.shift
-			@working_objects << temporary_object
-			return temporary_object
-		end
-	end
-
-	def release(object)
-		if temporary_object = @working_objects.delete(object)
-			@available_objects << temporary_object
-		end	
+	def release(unique_id)
+		object = @working.delete(unique_id)
+		@available[unique_id]=object
 	end
 
 	private_class_method :new
 end
 
 class Foo
-	include Poolable
+	attr_accessor :id
+	def initialize(id)
+		@id = id
+	end
 end
-=begin testando
-obj1 = Foo.new
-obj2 = Foo.new
 
 pool = Pool.get_instance
-pool.add_object(obj1)
-pool.add_object(obj2)
+obj1 = Foo.new(3)
+obj2 = Foo.new(219821)
 
-user1 = pool.acquire
-user2 = pool.acquire
-
-pool.release(user1)
-pool.release(user2)
-
-puts pool.inspect
-
-=end
+pool.add(obj1, obj1.id)
+pool.add(obj2, obj2.id)
+p pool.inspect
+user = pool.pick(obj2.id)
+p pool.inspect
+user1 = pool.pick(obj1.id)
+p pool.inspect
+pool.release(obj1.id)
+p pool.inspect
