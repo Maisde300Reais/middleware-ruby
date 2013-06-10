@@ -44,6 +44,7 @@ class Chutambo
 
 end
 
+=begin
 class Foo
   lazy_load :teste, load_class: "Chutambo"
   lazy_load :ei, load_method: :load_ei
@@ -73,7 +74,7 @@ end
 # puts foo.chutambo.num_of_vacilos
 
 
-=begin
+
 class Hue
   lazy_load :variavel, :variavel2
 
