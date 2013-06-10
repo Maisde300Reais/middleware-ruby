@@ -1,13 +1,17 @@
 require_relative 'Marshaller'
+require 'singleton'
 
 class Passivation
+	include Singleton
 	attr_accessor :marshaller
 
 	def initialize()
 		@marshaller = Marshaller.new
+		@persisted_objects = {}
 	end
 
 	def passivate(object, unique_id)
+		@persisted_objects[unique_id]=object
 		name = object.class.to_s + unique_id.to_s
 		file = File.open(name, "w+")
   		file.write(@marshaller.marshall(object)) 
@@ -22,6 +26,17 @@ class Passivation
 			@marshaller.demarshall(contents)
 		else
 			:NoSuchObject
+		end
+
+	end
+
+	def pick_persistable(unique_id)
+
+		if !@persisted_objects.include?(unique_id)
+			puts "não foi colocado em disco, de onde retornar?"
+		else
+			object = @persisted_objects.delete(unique_id)
+			activate(object, unique_id)
 		end
 
 	end

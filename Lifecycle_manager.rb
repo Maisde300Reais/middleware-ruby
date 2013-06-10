@@ -7,10 +7,9 @@ class Lifecycle_manager
 
 	def initialize()
 		@remote_objects = {}
-		@persisted_objects = {}
 		@register = {}
 		@pool = Pool.instance
-		@persist = Passivation.new
+		@persist = Passivation.instance
 		@config = Group_config.instance
 	end
 
@@ -30,7 +29,7 @@ class Lifecycle_manager
 		case strategy
 		
 		when "Passivation"
-			pick_persistable(unique_id)
+			@persist.pick_persistable(unique_id)
 
 		when "Poolable"
 			pick_poolable(unique_id)
@@ -51,17 +50,6 @@ class Lifecycle_manager
 
 	def pick_poolable(unique_id)
 		return @pool.pick(unique_id)
-	end
-
-	def pick_persistable(unique_id)
-
-		if !@persisted_objects.include?(unique_id)
-			puts "não foi colocado em disco, de onde retornar?"
-		else
-			object = @persisted_objects.delete(unique_id)
-			@persist.activate(object, unique_id)
-		end
-
 	end
 
 	def pick_leaseable()
@@ -98,7 +86,6 @@ manager.config.register_class_as(rebeca.class, "Poolable")
 
 manager.pool.add(rebeca, rebeca.id)
 manager.persist.passivate(larissa, larissa.id)
-manager.persisted_objects[larissa.id]=larissa
 
 puts manager.pick_object(rebeca, rebeca.id).inspect
 puts manager.pick_object(larissa, larissa.id).inspect
