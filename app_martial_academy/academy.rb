@@ -21,17 +21,14 @@ class Academy
 		@users[user.id] = user
 		return "> #{@users[user.id].name} cadastrado com sucesso."
 	end
-
-	def get_trainings
-=begin
-		:training_list
-		trainings.each do |t|
-			:training_list = "#{t[training.id].day}, #{t[training.id].time} com #{t[training.id].instructor}\n"
-		end
-		return :training_list
-=end
 		
-		@trainings.to_s
+	def list_trainings
+		result = "Dia | Hora | Instrutor "
+		@trainings.each do |t| 
+			result << "#{t.day} | #{t.time} | #{t.instructor} "
+		end
+		result
+		end
 	end
 
 end
