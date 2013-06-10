@@ -1,6 +1,7 @@
 class DefaultInvoker
   def invoke(invocation)
     mid = Middleware.instance
+    lcm = Lifecycle_manager.instance
 
     puts invocation
 

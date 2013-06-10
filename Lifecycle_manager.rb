@@ -1,12 +1,15 @@
+require 'singleton'
 require_relative 'Pool'
 require_relative 'group_config'
 require_relative 'Passivation'
+require_relative 'middleware'
 
 class Lifecycle_manager
+	include Singleton
 	attr_accessor :hash_register, :config, :pool, :persisted_objects, :persist, :mid
 
 	def initialize()
-		#@mid = Middleware.instance
+		@mid = Middleware.instance
 		@pool = Pool.instance
 		@persist = Passivation.instance
 		@config = Group_config.instance

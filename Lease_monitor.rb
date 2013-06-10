@@ -53,6 +53,7 @@ class LeaseMonitor
   end
 end
 
+=begin
 class Foo
   def method_missing(m, *args, &block)
     puts "Chamou metodo #{m} com argumentos #{args}"
@@ -66,7 +67,7 @@ end
 
 foo = Foo.new
 foo.huehueuhe("brbrbrbrbrbrb", 1223) { |m| puts "Bloco executado no metodo #{m}" }
-
+=end
 #
 # class Foo
 #   include Leaseable
