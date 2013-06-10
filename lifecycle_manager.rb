@@ -1,7 +1,7 @@
 require 'singleton'
-require_relative 'Pool'
+require_relative 'pool'
 require_relative 'group_config'
-require_relative 'Passivation'
+require_relative 'passivation'
 require_relative 'middleware'
 
 class Lifecycle_manager

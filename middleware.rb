@@ -1,11 +1,11 @@
 require 'open-uri'
 require 'singleton'
 
-require_relative 'Lease_monitor'
-require_relative 'Leaseable'
+require_relative 'lease_monitor'
+require_relative 'leaseable'
 require_relative 'default_invoker'
-require_relative 'Marshaller'
-require_relative 'attr_teste'
+require_relative 'marshaller'
+require_relative 'lazy_load'
 
 require 'net/http'
 require 'uri'

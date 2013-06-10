@@ -1,4 +1,4 @@
-require_relative "Leaseable"
+require_relative "leaseable"
 require 'singleton'
 
 class LeaseMonitor

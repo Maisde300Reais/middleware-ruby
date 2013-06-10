@@ -2,7 +2,7 @@ require 'singleton'
 
 require_relative 'soapProtocol'
 require_relative 'restProtocol'
-require_relative 'attr_teste'
+require_relative 'lazy_load'
 
 class Client_Request_Handler
   include Singleton
