@@ -7,7 +7,7 @@ class Academy_Proxy
 	
 	def initialize
 		#cadastre uma id de library e a instancia referenciada
-		@r = Requestor.new("academy", Academy.new)
+		@r = Requestor.instance
 	end
 
 	#cada método deve simplesmente traduzir de chamadas normais para chamadas
@@ -21,6 +21,7 @@ class Academy_Proxy
   	params[:training_day] = training.day
   	params[:training_time] = training.time
   	params[:training_instructor] = training.instructor
+    params[:http_action] = "post"
 
   	p @r.invoke("academy", "add_training", params)
   end
@@ -31,8 +32,16 @@ class Academy_Proxy
 
   	params[:user_id] = user.id
   	params[:user_name] = user.name
+    params[:http_action] = "post"
 
   	p @r.invoke("academy", "add_user", params)
+  end
+
+  def list_trainings
+    params ={}
+    params[:http_action] = "get"
+
+    p @r.invoke("academy", "list_trainings", params)
   end
 end
 
@@ -45,4 +54,5 @@ def test
 
   acad.add_user user
   acad.add_training training
+  acad.list_trainings
 end
