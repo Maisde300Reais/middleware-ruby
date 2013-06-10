@@ -6,10 +6,9 @@ require_relative 'book'
 class LibraryProxy
 
   def initialize
-    #cadastre uma id de library e a instancia referenciada   
-    @r = Requestor.new 
+    @r = Requestor.instance
   end
-
+  
   #cada método deve simplesmente traduzir de chamadas normais para chamadas
   #do requestor
 
