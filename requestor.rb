@@ -1,10 +1,6 @@
 require 'singleton'
 
 require_relative 'client_request_handler'
-# require_relative 'invocation'
-# require_relative 'config'
-# require_relative 'qos_observer'
-# require_relative 'extension_contexters'
 require_relative 'middleware'
 require_relative 'leaseable'
 
