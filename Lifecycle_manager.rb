@@ -3,24 +3,24 @@ require_relative 'group_config'
 require_relative 'Passivation'
 
 class Lifecycle_manager
-	attr_accessor :hash_register, :config, :pool, :persisted_objects, :persist
+	attr_accessor :hash_register, :config, :pool, :persisted_objects, :persist, :mid
 
 	def initialize()
-		@remote_objects = {}
+		@mid = Middleware.instance
 		@register = {}
 		@pool = Pool.instance
 		@persist = Passivation.instance
 		@config = Group_config.instance
 	end
 
-	def register_remote_object(unique_id, object)
-    	@remote_objects[unique_id] = object
-    	#falta fazer a ação correspondente a criação desse obj
-  	end
-
   	def get_remote_object(unique_id)
-		object = @remote_objects[unique_id]
-		return pick_object(object, unique_id)
+  		if @config.registered.empty?
+  			object = mid.remote_objects[unique_id]
+  			return object
+  		else
+			object = mid.remote_objects[unique_id]
+			return pick_object(object, unique_id)
+		end
   	end
 
 	def pick_object(object, unique_id)
