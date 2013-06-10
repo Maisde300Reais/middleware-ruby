@@ -102,8 +102,9 @@ class Middleware
 
       puts postData.body
     end
-
-    @remote_objects[id] = obj
+    lcm = Lifecycle_manager.instance
+    #lcm.register_remote_object(obj, id)
+    @remote_objects[id] = lcm.register_remote_object(obj, id)
   end
 
   def load_routes

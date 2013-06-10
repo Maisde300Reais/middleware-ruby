@@ -23,6 +23,19 @@ class Lifecycle_manager
 		end
   	end
 
+  	def register_remote_object(object, unique_id)
+  		strategy = @config.get_strategy(object)
+
+  		case strategy
+
+  		when "Leaseable"
+  			object.send(:extend, Leaseable)
+  			return object
+  		else
+  			return object
+  		end
+  	end
+
 	def pick_object(object, unique_id)
 		strategy = @config.get_strategy(object)
 
