@@ -31,15 +31,13 @@ class Academy_Proxy
 
   	params[:user_id] = user.id
   	params[:user_name] = user.name
-  	params[:user_password] = user.password
-  	params[:user_type] = user.type
 
   	p @r.invoke("academy", "add_user", params)
   end
 end
 
 def test
-  training = Training.new("1", "seg", 19, "Paulo")
+  training = Training.new("1", "seg", "19h", "Paulo")
 
   user = User.new("1", "SeuRAUL")
 

@@ -17,7 +17,7 @@ class Academy
 	end
 
 	def add_user(params)
-		user = User.new(params["user_id"], params["user_name"], params["user_password"], params["user_type"])
+		user = User.new(params["user_id"], params["user_name"])
 		@users[user.id] = user
 		return "> #{@users[user.id].name} cadastrado com sucesso."
 	end
