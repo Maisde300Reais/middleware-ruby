@@ -3,7 +3,7 @@ require_relative 'academy'
 require_relative 'user'
 require_relative 'academy'
 
-class Library_Proxy
+class Academy_Proxy
 	
 	def initialize
 		#cadastre uma id de library e a instancia referenciada
