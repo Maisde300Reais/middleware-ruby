@@ -1,4 +1,4 @@
-require_relative '../basic_remote/invocation'
+require_relative 'invocation'
 
 require 'singleton'
 
