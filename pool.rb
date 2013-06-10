@@ -37,7 +37,6 @@ class Pool
 		
 	end
 
-	private_class_method :new
 end
 
 =begin

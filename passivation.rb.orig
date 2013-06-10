@@ -33,8 +33,12 @@ class Passivation
 	def pick_persistable(unique_id)
 
 		if !@persisted_objects.include?(unique_id)
+<<<<<<< Updated upstream
+			puts "nao foi colocado em disco, de onde retornar?"
+=======
 			lcm = Lifecycle_manager.instance
 			return lcm.mid.remote_objects[unique_id]
+>>>>>>> Stashed changes
 		else
 			object = @persisted_objects.delete(unique_id)
 			activate(object, unique_id)

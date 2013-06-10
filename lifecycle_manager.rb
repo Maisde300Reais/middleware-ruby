@@ -43,12 +43,9 @@ class Lifecycle_manager
 
 		else
 			puts object.inspect
-			#ObjectClassNotRegistered -> Eager_acquisition <-
-
 		end
 	end
 
-	
 end
 
 =begin
