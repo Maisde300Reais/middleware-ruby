@@ -38,8 +38,6 @@ class Requestor
       params: params
     }
 
-    puts invocation
-
     @client_request_handler.send_message(invocation)
   end
 

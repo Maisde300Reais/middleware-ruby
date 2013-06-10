@@ -8,21 +8,24 @@ require_relative 'app_library/library'
 class ServerRequestHandler
   include WEBrick
 
-  def initialize
+  attr_accessor :port
+
+  def initialize(port)
+    @port = port
   end
 
   def start 
     root = File.expand_path '~/public_html'
-    @server = WEBrick::HTTPServer.new(:Port => 8000)
+    @server = WEBrick::HTTPServer.new(:Port => @port)
 
     @server.mount "/", HttpHandler
 
     trap("INT"){ @server.shutdown }
 
     Middleware.instance.register_lookup "localhost:2000"
+    Middleware.instance.port = @port
     Middleware.instance.register_remote_object "library", Library.new
     Middleware.instance._load_routes_file
-
 
     @server.start
   end
@@ -75,4 +78,4 @@ class HttpHandler < WEBrick::HTTPServlet::AbstractServlet
 end
 
 
-ServerRequestHandler.new.start
+ServerRequestHandler.new(ARGV[0]).start
