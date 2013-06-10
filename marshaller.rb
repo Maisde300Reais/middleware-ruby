@@ -47,10 +47,7 @@ class Marshaller
       params = Utils.decode_params_url(request.body)
     end
 
-    puts request.path[(request.path.rindex('/') + 1)...-1]
-
     {
-      endpoint: "http://localhost:8000",
       http_action: request.request_method,
       url: request.path,
       method: request.path[(request.path.rindex('/') + 1)..-1],

@@ -3,7 +3,7 @@ require 'time'
 require 'benchmark'
 
 require_relative 'middleware'
-require_relative 'app_library/library'
+require_relative 'app_store/store'
 
 class ServerRequestHandler
   include WEBrick
@@ -24,7 +24,7 @@ class ServerRequestHandler
 
     Middleware.instance.register_lookup "localhost:2000"
     Middleware.instance.port = @port
-    Middleware.instance.register_remote_object "library", Library.new
+    Middleware.instance.register_remote_object "store", Store.new
     Middleware.instance._load_routes_file
 
     @server.start

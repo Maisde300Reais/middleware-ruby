@@ -3,6 +3,7 @@ require 'cgi'
 require 'fileutils'
 require 'tempfile'
 require 'json'
+require 'set'
 
 require_relative 'utils'
 
@@ -14,7 +15,7 @@ class Lookup
   end
 
   def register_remote_object(id, endpoint)
-    @remote_objects[id] ||= []
+    @remote_objects[id] ||= Set.new
     @remote_objects[id] << endpoint
 
     return 200, "Object #{id} registered at endpoint #{endpoint}"
@@ -26,12 +27,12 @@ class Lookup
 
   def servers_by_remote_object(id)
     return 404, "There is no server which has a object with this id: #{id}" unless @remote_objects[id]
-    return 200, @remote_objects[id].to_json
+    return 200, @remote_objects[id].to_a.to_json
   end
 
-  def get_server(id)  
+  def get_server(id)
     return 404, "There is no server which has a object with this id: #{id}" unless @remote_objects[id]
-    return 200, @remote_objects[id].sample.to_json
+    return 200, @remote_objects[id].to_a.sample.to_json
   end
 end
 

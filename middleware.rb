@@ -43,6 +43,25 @@ class Middleware
     lookup_addresses << address
   end
 
+  def get_servers(id)
+    @lookup_addresses.each do |addr|
+      uri = URI.parse("http://#{addr}/objects/get_servers?id=#{id}")
+      http_request = Net::HTTP.get_response(uri)
+
+      result = []
+
+      str = http_request.body[1..-2]
+
+      str.split(",").each do |server|
+        server = server[1..-2]
+
+        result << server
+      end
+
+      return result
+    end
+  end
+
   def get_server(id)
     addrs = @lookup_addresses.cycle
 
