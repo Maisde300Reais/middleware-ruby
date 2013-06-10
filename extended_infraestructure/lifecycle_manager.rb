@@ -1,8 +1,8 @@
 require 'singleton'
-require_relative 'pool'
-require_relative 'group_config'
-require_relative 'passivation'
-require_relative 'middleware'
+require_relative '../lifecycle_patterns/pool'
+require_relative '../extended_infraestructure/group_config'
+require_relative '../lifecycle_patterns/passivation'
+require_relative '../middleware'
 
 class Lifecycle_manager
 	include Singleton

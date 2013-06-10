@@ -1,4 +1,4 @@
-require_relative 'marshaller'
+require_relative '../basic_remote/marshaller'
 require 'singleton'
 
 class Passivation

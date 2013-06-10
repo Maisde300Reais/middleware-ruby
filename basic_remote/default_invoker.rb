@@ -1,4 +1,4 @@
-require_relative 'lifecycle_manager'
+require_relative '../extended_infraestructure/lifecycle_manager'
 
 class DefaultInvoker
   def initialize
@@ -13,21 +13,16 @@ class DefaultInvoker
 
     obj, method = remote.split("#")
 
-<<<<<<< HEAD
-    #return mid.get_remote_object(obj).send(method, invocation[:params])
-    return lcm.get_remote_object(obj).send(method, invocation[:params])
-=======
     @invocation_intercepters.each do |inter|
       inter.instance.before_invocation(invocation)
     end
 
-    result = mid.get_remote_object(obj).send(method, invocation[:params])
+    result = lcm.get_remote_object(obj).send(method, invocation[:params])
 
     @invocation_intercepters.each do |inter|
       inter.instance.after_invocation(invocation)
     end
 
     return result
->>>>>>> Replicacao de servidores funfando
   end
 end

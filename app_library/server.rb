@@ -1,4 +1,4 @@
-require_relative "../server_request_handler"
+require_relative "../basic_remote/server_request_handler"
 require_relative "library"
 
 if $0 == __FILE__ then

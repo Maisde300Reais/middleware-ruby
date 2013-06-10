@@ -1,12 +1,12 @@
 require 'open-uri'
 require 'singleton'
 
-require_relative 'lease_monitor'
-require_relative 'leaseable'
-require_relative 'default_invoker'
-require_relative 'marshaller'
-require_relative 'lazy_load'
-require_relative 'lifecycle_manager'
+require_relative 'lifecycle_patterns/lease_monitor'
+require_relative 'lifecycle_patterns/leaseable'
+require_relative 'basic_remote/default_invoker'
+require_relative 'basic_remote/marshaller'
+require_relative 'lifecycle_patterns/lazy_load'
+require_relative 'extended_infraestructure/lifecycle_manager'
 
 require 'net/http'
 require 'uri'
@@ -21,7 +21,8 @@ class Middleware
 
   def initialize
     @lookup_addresses = []
-    @lookup_file_path = "./client/config/routes.config"
+    system("ls")
+    @lookup_file_path = "client/config/routes.config"
     @invokers = {"default" => DefaultInvoker.new}
 
     @remote_objects = {}

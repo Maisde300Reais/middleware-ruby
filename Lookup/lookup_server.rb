@@ -5,7 +5,7 @@ require 'tempfile'
 require 'json'
 require 'set'
 
-require_relative 'utils'
+require_relative '../utils'
 
 class Lookup
   include Singleton

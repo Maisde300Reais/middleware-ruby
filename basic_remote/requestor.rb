@@ -1,8 +1,8 @@
 require 'singleton'
 
 require_relative 'client_request_handler'
-require_relative 'middleware'
-require_relative 'leaseable'
+require_relative '../middleware'
+require_relative '../lifecycle_patterns/leaseable'
 
 class AuthInterceptor
   include Singleton

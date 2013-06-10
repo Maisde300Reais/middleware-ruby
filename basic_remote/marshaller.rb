@@ -2,7 +2,7 @@ require 'json'
 require 'savon'
 require_relative 'soapProtocol'
 
-require_relative 'utils'
+require_relative '../utils'
 
 class Marshaller
 
