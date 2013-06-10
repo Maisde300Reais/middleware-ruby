@@ -6,6 +6,7 @@ require_relative 'leaseable'
 require_relative 'default_invoker'
 require_relative 'marshaller'
 require_relative 'lazy_load'
+require_relative 'lifecycle_manager'
 
 require 'net/http'
 require 'uri'
@@ -13,7 +14,7 @@ require 'uri'
 class Middleware
   include Singleton
 
-  attr_accessor :port
+  attr_accessor :port, :remote_objects
 
   #identification
   attr_reader :lookup_addresses, :lookup_file_path

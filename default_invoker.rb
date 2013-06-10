@@ -9,6 +9,7 @@ class DefaultInvoker
 
     obj, method = remote.split("#")
 
-    return mid.get_remote_object(obj).send(method, invocation[:params])
+    #return mid.get_remote_object(obj).send(method, invocation[:params])
+    return lcm.get_remote_object(obj).send(method, invocation[:params])
   end
 end

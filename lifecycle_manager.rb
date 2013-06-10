@@ -17,11 +17,9 @@ class Lifecycle_manager
 
   	def get_remote_object(unique_id)
   		if @config.registered.empty?
-  			object = mid.remote_objects[unique_id]
-  			return object
+  			return mid.remote_objects[unique_id]
   		else
-			object = mid.remote_objects[unique_id]
-			return pick_object(object, unique_id)
+			return pick_object(mid.remote_objects[unique_id], unique_id)
 		end
   	end
 
