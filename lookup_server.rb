@@ -132,9 +132,5 @@ class RouteManager < WEBrick::HTTPServlet::AbstractServlet
 end
 =end
 
-Lookup.instance.register_remote_object("potato", "localhost:3000")
-Lookup.instance.register_remote_object("potato", "localhost:4000")
-
-
 server = LookupServer.new
 server.start

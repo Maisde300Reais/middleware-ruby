@@ -1,20 +1,18 @@
 class Class
    def lazy_load(var, *args, &block)
-    if not block.nil?
-      block.call(var)
-    end
-
     params = args[0]
 
     if params.nil?
       params = {}
-      params[:load_class] = var.to_s.capitalize
+      params[:load_class] = var.to_s.split("_").map(&:capitalize).join
     end  
 
     if params[:load_class]
-      define_method var do
-        @var ||= params[:load_class].new
-      end
+      class_eval %Q*
+        def #{var}
+          @#{var} ||= #{params[:load_class]}.new
+        end
+      *
     elsif params[:load_method]
       define_method var do
         if self.instance_variable_get("@#{var}".to_sym).nil?
@@ -24,6 +22,11 @@ class Class
         self.instance_variable_get("@#{var}".to_sym)
       end
     end
+
+    if not block.nil?
+      block.call(var)
+    end
+
   end
 end
 

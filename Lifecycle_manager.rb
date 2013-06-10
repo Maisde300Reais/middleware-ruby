@@ -1,51 +1,75 @@
 require_relative 'Pool'
+require_relative 'group_config'
+require_relative 'Passivation'
 
 class Lifecycle_manager
-	attr_accessor :hash
+	attr_accessor :hash_register, :config, :pool, :persisted_objects, :persist
 
 	def initialize()
-		@hash_register = {}
-		@passivated_objects = {}
-		@pool = Pool.get_instance()
+		@remote_objects = {}
+		@persisted_objects = {}
+		@register = {}
+		@pool = Pool.instance
+		@persist = Passivation.new
+		@config = Group_config.instance
 	end
 
-	#set strategy for each class here
-	def register_object_as(class_name, strategy)
-		@hash[class_name]=strategy
-	end
+	def register_remote_object(unique_id, object)
+    	@remote_objects[unique_id] = object
+    	#falta fazer a ação correspondente a criação desse obj
+  	end
+
+  	def get_remote_object(unique_id)
+		object = @remote_objects[unique_id]
+		return pick_object(object, unique_id)
+  	end
 
 	def pick_object(object, unique_id)
-		strategy = @hash_register[object.class]
+		strategy = @config.get_strategy(object)
 
 		case strategy
-		when "Lazy"
-			puts "It's Lazy, f*ck this sh*t, call it now!"
-
+		
 		when "Passivation"
-			pick_persistable()
+			pick_persistable(unique_id)
 
 		when "Poolable"
-			pick_poolable()
+			pick_poolable(unique_id)
+
+		#a partir daqui, não sei se precisa de tratamento proprio..
+		when "Lazy"
+			return @remote_objects[unique_id]
 
 		when "Leaseable"
 			pick_leaseable()
 
 		else
-			:ObjectClassNotRegistered
+			puts object.inspect
+			#ObjectClassNotRegistered -> Eager_acquisition
 
 		end
 	end
 
-	def pick_poolable()
-		puts "It's poolable, need to check if it is already at work or available"
+	def pick_poolable(unique_id)
+		return @pool.pick(unique_id)
 	end
 
-	def pick_persistable()
-		puts "It's Persistable, need to check if it is active or persisted"
+	def pick_persistable(unique_id)
+
+		if !@persisted_objects.include?(unique_id)
+			puts "não foi colocado em disco, de onde retornar?"
+		else
+			object = @persisted_objects.delete(unique_id)
+			@persist.activate(object, unique_id)
+		end
+
 	end
 
 	def pick_leaseable()
 		puts "It's leaseable, need to check if its lease has expired, if not expired I will renew it!"
+	end
+
+	def pick_eager()
+		puts "Just gotta return the object from the lookup table!"
 	end
 	
 end
@@ -64,23 +88,17 @@ class Fuu
 	end
 end
 
-class Chutambo
-	attr_accessor :attack
-	def initialize(id)
-		@attack = attack
-	end
-end
-
 manager = Lifecycle_manager.new()
 
 rebeca = Foo.new(1)
 larissa = Fuu.new(2)
-igor = Chutambo.new("porrada")
 
-manager.register_object_as(larissa.class, "Passivation")
-manager.register_object_as(rebeca.class, "Lazy")
-manager.register_object_as(igor.class, "Poolable")
+manager.config.register_class_as(larissa.class, "Passivation")
+manager.config.register_class_as(rebeca.class, "Poolable")
 
-manager.pick_object(larissa, igor.attack)
-manager.pick_object(rebeca, igor.attack)
-manager.pick_object(igor, igor.attack)
+manager.pool.add(rebeca, rebeca.id)
+manager.persist.passivate(larissa, larissa.id)
+manager.persisted_objects[larissa.id]=larissa
+
+puts manager.pick_object(rebeca, rebeca.id).inspect
+puts manager.pick_object(larissa, larissa.id).inspect
