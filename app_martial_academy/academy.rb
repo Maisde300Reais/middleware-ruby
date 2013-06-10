@@ -10,24 +10,24 @@ class Academy
 		@users = {}
 	end
 
-	def add_training(training)
-		# training = Training.new(params["training_id"], params["training_day"], params["training_time"], params["training_instructor"])
+	def add_training(params)
+		training = Training.new(params["training_id"], params["training_day"], params["training_time"], params["training_instructor"])
 		@trainings[training.id] = training
 		return "> Treino de #{training.day}, #{training.time} cadastrado com sucesso."
 	end
 
-	def add_user(user)
-		#user = User.new(params["user_id"], params["user_name"])
+	def add_user(params)
+		user = User.new(params["user_id"], params["user_name"])
 		@users[user.id] = user
-		return "> #{@users[user.id].name} cadastrado com sucesso."
+		return "> #{user.name} cadastrado com sucesso."
 	end
 		
-	def list_trainings
+	def list_trainings(params)
 		result = "Dia | Hora | Instrutor \n "
 		@trainings.each do |id, t| 
 			result << "#{t.day} - #{t.time} - #{t.instructor} \n "
 		end
-		result
+		return result
 	end
 
 end

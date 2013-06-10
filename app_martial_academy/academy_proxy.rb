@@ -1,4 +1,4 @@
-require_relative '../requestor'
+require_relative '../basic_remote/requestor'
 require_relative 'academy'
 require_relative 'user'
 require_relative 'academy'
@@ -6,7 +6,6 @@ require_relative 'academy'
 class Academy_Proxy
 	
 	def initialize
-		#cadastre uma id de library e a instancia referenciada
 		@r = Requestor.instance
 	end
 
@@ -45,6 +44,7 @@ class Academy_Proxy
   end
 end
 
+=begin
 def test
   training = Training.new("1", "seg", "19h", "Paulo")
 
@@ -56,3 +56,4 @@ def test
   acad.add_training training
   acad.list_trainings
 end
+=end
