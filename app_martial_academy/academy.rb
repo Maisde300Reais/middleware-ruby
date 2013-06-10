@@ -32,6 +32,7 @@ class Academy
 
 end
 
+=begin
 def test
 
 	user = User.new("23", "SeuRAUL")
@@ -48,3 +49,4 @@ def test
 	puts academia.list_trainings
 
 end
+=end
