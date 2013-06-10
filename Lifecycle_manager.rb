@@ -6,8 +6,7 @@ class Lifecycle_manager
 	attr_accessor :hash_register, :config, :pool, :persisted_objects, :persist, :mid
 
 	def initialize()
-		@mid = Middleware.instance
-		@register = {}
+		#@mid = Middleware.instance
 		@pool = Pool.instance
 		@persist = Passivation.instance
 		@config = Group_config.instance
@@ -51,6 +50,7 @@ class Lifecycle_manager
 	
 end
 
+=begin
 class Foo
 	attr_accessor :id
 	def initialize(id)
@@ -78,3 +78,4 @@ manager.persist.passivate(larissa, larissa.id)
 
 puts manager.pick_object(rebeca, rebeca.id).inspect
 puts manager.pick_object(larissa, larissa.id).inspect
+=end
