@@ -1,4 +1,4 @@
-require_relative 'marshaller'
+require_relative '../basic_remote/marshaller'
 require 'singleton'
 
 class Passivation
@@ -33,7 +33,8 @@ class Passivation
 	def pick_persistable(unique_id)
 
 		if !@persisted_objects.include?(unique_id)
-			puts "nao foi colocado em disco, de onde retornar?"
+			lcm = Lifecycle_manager.instance
+			return lcm.mid.remote_objects[unique_id]
 		else
 			object = @persisted_objects.delete(unique_id)
 			activate(object, unique_id)

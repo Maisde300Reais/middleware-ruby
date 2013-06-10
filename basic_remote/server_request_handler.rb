@@ -2,8 +2,8 @@ require 'webrick'
 require 'time'
 require 'benchmark'
 
-require_relative 'middleware'
-require_relative 'app_store/store'
+require_relative '../middleware'
+require_relative '../app_store/store'
 
 class ServerRequestHandler
   include WEBrick

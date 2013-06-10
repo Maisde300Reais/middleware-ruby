@@ -1,8 +1,8 @@
 require 'singleton'
-require_relative 'pool'
-require_relative 'group_config'
-require_relative 'passivation'
-require_relative 'middleware'
+require_relative '../lifecycle_patterns/pool'
+require_relative '../extended_infraestructure/group_config'
+require_relative '../lifecycle_patterns/passivation'
+require_relative '../middleware'
 
 class Lifecycle_manager
 	include Singleton
@@ -21,6 +21,19 @@ class Lifecycle_manager
   		else
 			return pick_object(mid.remote_objects[unique_id], unique_id)
 		end
+  	end
+
+  	def register_remote_object(object, unique_id)
+  		strategy = @config.get_strategy(object)
+
+  		case strategy
+
+  		when "Leaseable"
+  			object.send(:extend, Leaseable)
+  			return object
+  		else
+  			return object
+  		end
   	end
 
 	def pick_object(object, unique_id)
@@ -43,12 +56,9 @@ class Lifecycle_manager
 
 		else
 			puts object.inspect
-			#ObjectClassNotRegistered -> Eager_acquisition <-
-
 		end
 	end
 
-	
 end
 
 =begin

@@ -1,4 +1,4 @@
-require_relative '../requestor'
+require_relative '../basic_remote/requestor'
 require_relative 'library'
 require_relative 'client'
 require_relative 'book'

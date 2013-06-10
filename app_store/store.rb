@@ -2,7 +2,6 @@ require_relative 'product'
 require_relative 'user'
 
 class Store
-
   attr_accessor :users
 
   def initialize
