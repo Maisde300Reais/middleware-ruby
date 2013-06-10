@@ -7,7 +7,7 @@ class LibraryProxy
 
   def initialize
     #cadastre uma id de library e a instancia referenciada   
-    @r = Requestor.new("library", Library.new) 
+    @r = Requestor.new 
   end
 
   #cada método deve simplesmente traduzir de chamadas normais para chamadas
@@ -19,6 +19,7 @@ class LibraryProxy
 
     params[:book_name] = book.name
     params[:book_id] = book.id
+    params[:http_action] = "post"
 
     p @r.invoke("library", "add_book", params)
   end
@@ -29,6 +30,7 @@ class LibraryProxy
     
     params[:client_id] = client.id
     params[:client_name] = client.name
+    params[:http_action] = "post"
 
     p @r.invoke("library", "add_client", params)
   end
@@ -39,6 +41,7 @@ class LibraryProxy
 
     params[:book_id]=book.id
     params[:client_id]=client.id
+    params[:http_action] = "post"
 
     p @r.invoke("library", "rent_book", params)
   end
@@ -49,6 +52,7 @@ class LibraryProxy
 
     params[:book_id]=book.id
     params[:client_id]=client.id
+    params[:http_action] = "post"
 
     p @r.invoke("library", "return_book", params)
   end
@@ -67,3 +71,5 @@ def test
   lib.rent_book client, book
   lib.return_book client, book
 end
+
+test

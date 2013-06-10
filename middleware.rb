@@ -49,7 +49,9 @@ class Middleware
 
         next if str.empty?
 
-        return str[1..-2]
+        return str[1..-2] if (str.start_with?('"') and str.end_with?('"'))
+
+        return str
       rescue 
         next
       end

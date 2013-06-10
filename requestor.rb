@@ -26,14 +26,12 @@ class Requestor
   end
 
   def invoke(obj, method, params = {})
-    endpoint = "http://#{(Middleware.instance.get_server "library")}"
-
-    #http_method, url = Middleware.instance.objects_to_routes[obj + "#" + method].split(" ")
+    endpoint = "http://#{(Middleware.instance.get_server obj)}"
 
     invocation = {
       endpoint: endpoint,
-      http_action: "post",
       method: method,
+      http_action: params[:http_action],
       url: "/#{obj}/#{method}",
       protocol: :rest,
       case_pattern: :camel_words,
@@ -46,6 +44,3 @@ class Requestor
   end
 
 end
-
-r = Requestor.new
-p r.invoke("library", "add_book", {book_name: "huehue", book_id: "huhruar"})
