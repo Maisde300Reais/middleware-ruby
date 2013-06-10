@@ -47,15 +47,14 @@ class Lifecycle_manager
 		when "Poolable"
 			@pool.pick(unique_id)
 
-		#a partir daqui, não sei se precisa de tratamento proprio..
 		when "Lazy"
 			return @remote_objects[unique_id]
 
 		when "Leaseable"
-			pick_leaseable()
+			return @remote_objects[unique_id]
 
 		else
-			puts object.inspect
+			:UnknownStrategy
 		end
 	end
 
