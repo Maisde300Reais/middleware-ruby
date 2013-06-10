@@ -14,7 +14,7 @@ class ServerRequestHandler
     @port = port
   end
 
-  def start 
+  def start(app_name, app_facade)
     root = File.expand_path '~/public_html'
     @server = WEBrick::HTTPServer.new(:Port => @port)
 
@@ -24,7 +24,7 @@ class ServerRequestHandler
 
     Middleware.instance.register_lookup "localhost:2000"
     Middleware.instance.port = @port
-    Middleware.instance.register_remote_object "store", Store.new
+    Middleware.instance.register_remote_object app_name, app_facade.send(:new)
     Middleware.instance._load_routes_file
 
     @server.start
@@ -78,4 +78,3 @@ class HttpHandler < WEBrick::HTTPServlet::AbstractServlet
 end
 
 
-ServerRequestHandler.new(ARGV[0]).start

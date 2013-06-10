@@ -21,7 +21,6 @@ class Middleware
 
   def initialize
     @lookup_addresses = []
-    system("ls")
     @lookup_file_path = "client/config/routes.config"
     @invokers = {"default" => DefaultInvoker.new}
 
