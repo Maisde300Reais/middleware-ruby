@@ -32,7 +32,7 @@ class Lifecycle_manager
 			@persist.pick_persistable(unique_id)
 
 		when "Poolable"
-			pick_poolable(unique_id)
+			@pool.pick(unique_id)
 
 		#a partir daqui, não sei se precisa de tratamento proprio..
 		when "Lazy"
@@ -43,22 +43,11 @@ class Lifecycle_manager
 
 		else
 			puts object.inspect
-			#ObjectClassNotRegistered -> Eager_acquisition
+			#ObjectClassNotRegistered -> Eager_acquisition <-
 
 		end
 	end
 
-	def pick_poolable(unique_id)
-		return @pool.pick(unique_id)
-	end
-
-	def pick_leaseable()
-		puts "It's leaseable, need to check if its lease has expired, if not expired I will renew it!"
-	end
-
-	def pick_eager()
-		puts "Just gotta return the object from the lookup table!"
-	end
 	
 end
 
