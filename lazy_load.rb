@@ -30,6 +30,7 @@ class Class
   end
 end
 
+=begin
 class Chutambo
 
   @@id = 0
@@ -44,7 +45,7 @@ class Chutambo
 
 end
 
-=begin
+
 class Foo
   lazy_load :teste, load_class: "Chutambo"
   lazy_load :ei, load_method: :load_ei
