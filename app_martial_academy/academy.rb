@@ -23,9 +23,9 @@ class Academy
 	end
 		
 	def list_trainings
-		result = "Dia | Hora | Instrutor "
+		result = "Dia | Hora | Instrutor \n "
 		@trainings.each do |t| 
-			result << "#{t.day} - #{t.time} - #{t.instructor} "
+			result << "#{t.day} - #{t.time} - #{t.instructor} \n "
 		end
 		result
 	end
