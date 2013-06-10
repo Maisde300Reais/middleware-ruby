@@ -13,6 +13,8 @@ require 'uri'
 class Middleware
   include Singleton
 
+  attr_accessor :port
+
   #identification
   attr_reader :lookup_addresses, :lookup_file_path
 
@@ -45,7 +47,16 @@ class Middleware
 
     addrs.each do |addr|
       begin
-        str = Net::HTTP.get(URI.parse("http://#{addr}/objects/get_server?id=#{id}"))
+        uri = URI.parse("http://#{addr}/objects/get_server?id=#{id}")
+        result = Net::HTTP.get_response(uri)
+
+        if result.code == "404"
+          puts result.body
+          sleep 1
+          next
+        end
+
+        str = result.body
 
         next if str.empty?
 
@@ -53,6 +64,7 @@ class Middleware
 
         return str
       rescue 
+        sleep 1
         next
       end
     end
@@ -65,7 +77,7 @@ class Middleware
   def register_remote_object(id, obj)
     lookup_addresses.each do |addr|
       postData = Net::HTTP.post_form(URI.parse("http://#{addr}/objects/add"),
-       {'id'=> id, 'endpoint' => "localhost:8000"})
+       {'id'=> id, 'endpoint' => "localhost:#{port}"})
 
       puts postData.body
     end

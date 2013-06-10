@@ -1,7 +1,0 @@
-GET /library/get_all_books library#get_all_books
-<<<<<<< HEAD
-POST /library/rent_book library#rent_book
-POST /library/add_client library#add_client
-=======
->>>>>>> c4ec441f9e1ea7d81a81e5b5528da368bc624451
-POST /library/add_book library#add_book
