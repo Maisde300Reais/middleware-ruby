@@ -33,6 +33,7 @@ class Quality_of_Service_Observer
     @times.each do |id, t|
       times << "#{t}"
     end
-    puts "Max: #{times.max}\nMin: #{times.min}\nMedia: #{(times.max + times.min) / 2}"
+    averange = (times.max + times.min) / 2
+    puts "Max: #{times.max}\nMin: #{times.min}\nMedia: #{averange}"
   end
 end

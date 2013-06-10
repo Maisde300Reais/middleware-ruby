@@ -6,13 +6,13 @@ class Academy
 	attr_accessor :training, :user
 
 	def initialize
-		@trainings = []
+		@trainings = {}
 		@users = {}
 	end
 
 	def add_training(training)
-		#training = Training.new(params["training_id"], params["training_day"], params["training_time"], params["training_instructor"])
-		@trainings << training
+		# training = Training.new(params["training_id"], params["training_day"], params["training_time"], params["training_instructor"])
+		@trainings[training.id] = training
 		return "> Treino de #{training.day}, #{training.time} cadastrado com sucesso."
 	end
 
@@ -24,7 +24,7 @@ class Academy
 		
 	def list_trainings
 		result = "Dia | Hora | Instrutor \n "
-		@trainings.each do |t| 
+		@trainings.each do |id, t| 
 			result << "#{t.day} - #{t.time} - #{t.instructor} \n "
 		end
 		result
@@ -45,8 +45,6 @@ def test
 	academia.add_training treino
 	academia.add_training treino2
 
-	p academia.list_trainings
+	puts academia.list_trainings
 
 end
-
-test
