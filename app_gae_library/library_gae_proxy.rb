@@ -53,15 +53,37 @@ class LibraryProxy
 end
 
 def teste
-  book = Book.new("Tres Porquinhos",20)
+
+  puts "-------Biblioteca - Lado Clinte -------"
+  puts "-Insira o nome do livro e sua quantidade:"
+  name= gets.chomp!
+  qtd= gets.chomp!
+
+  puts "-Criando Livro"
+  book = Book.new(name,qtd)
 
   l = LibraryProxy.new
 
+  puts "\n\n-Adicionando livro ao App Remoto"
+  puts "-O app remoto respondeu:"
   l.add_book(book)
 
+  puts "\n\n-Alugando livro"
+  puts "-O app remoto respondeu:"
   l.rent_book(book)
 
+  puts "\n\n-Retornando livro ao App Remoto"
+  puts "-O app remoto respondeu:"
   l.return_book(book)
+
+  puts "\n\n-Alugando livro novamente"
+  puts "-O app remoto respondeu:"
+  l.rent_book(book)
+
+  puts "\n\n-Alugando um livro existentee"
+  puts "-O app remoto respondeu:"
+  l.rent_book(Book.new("LivroUm", 10))
+
 end
 
 teste
