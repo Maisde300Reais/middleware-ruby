@@ -39,10 +39,21 @@ class LibraryProxy
 
     p @r.invoke("igor-app-pd", "library", params)
   end
+
+  def delete_book(book)
+
+    params={}
+
+    params[:http_action] = "delete"
+    params[:name] = book.name
+
+    p @r.invoke("igor-app-pd", "library", params)
+
+  end
 end
 
 def teste
-  book = Book.new("Chapeuzinho Vermelho",20)
+  book = Book.new("Tres Porquinhos",20)
 
   l = LibraryProxy.new
 
