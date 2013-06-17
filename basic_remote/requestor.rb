@@ -27,27 +27,6 @@ class AuthInterceptor
   end
 end
 
-class ReplicationInterceptor
-  include Singleton
-
-  attr_accessor :login, :password
-
-  def before_invocation(invocation)
-  end
-
-  def after_invocation(invocation)
-    servers = Middleware.instance.get_servers invocation[:remote_object]
-
-    servers.each do |server|
-      next if Middleware.instance.port == server
-
-      invocation[:endpoint] = "http://#{server}"
-
-      Client_Request_Handler.instance.send_message(invocation)
-    end
-  end
-end
-
 class Requestor
   include Singleton
 
@@ -64,10 +43,10 @@ class Requestor
     @invocation_intercepters = []
 
     @invocation_intercepters << AuthInterceptor
-    @invocation_intercepters << ReplicationInterceptor
 
     mid = Middleware.instance
     mid.register_lookup "localhost:2000"
+    mid.register_lookup "lookuppd.appspot.com"
   end
 
   def invoke(obj, method, params = {})
@@ -84,6 +63,8 @@ class Requestor
       params: params
     }
 
+    puts invocation
+
     @invocation_intercepters.each do |inter|
       inter.instance.before_invocation(invocation)
     end
@@ -96,5 +77,6 @@ class Requestor
 
     return result
   end
-
 end
+
+puts Requestor.instance.invoke("igor-app-id", "hue", { http_action: "get" })
