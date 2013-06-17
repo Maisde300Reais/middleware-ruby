@@ -23,7 +23,6 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_id]=book.id
     params[:http_action] = "post"
     params[:request_type] ="lend"
     params[:book] = book.name
@@ -35,8 +34,6 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_id]=book.id
-    params[:client_id]=client.id
     params[:http_action] = "post"
     params[:request_type] ="return"
     params[:book] = book.name

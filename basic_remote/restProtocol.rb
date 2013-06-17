@@ -25,7 +25,7 @@ Hash.send(:include, InvocationHash)
 
 class RestProtocol
   def send_message(invocation)
-    puts invocation.remote_object_url
+    #puts invocation.remote_object_url
 
     resource = RestClient::Resource.new invocation.remote_object_url
 
