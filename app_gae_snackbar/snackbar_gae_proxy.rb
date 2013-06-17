@@ -37,8 +37,15 @@ class SnackBarProxy
     p @r.invoke("roger-pd-app", "snackbar", params)
   end
 
+  def show_all()
+    params={} 
+    params[:http_action] = "get"
+    p @r.invoke("roger-pd-app", "snackbar", params)
+  end
+
 end
 
+=begin
 def teste
   food = Food.new("Coxinha", 5)
   food2 = Food.new("Risole", 10)
@@ -52,4 +59,5 @@ def teste
 
 end
 
-teste
+#teste
+=end

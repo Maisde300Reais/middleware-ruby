@@ -11,7 +11,6 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_name] = book.name
     params[:http_action] = "put"
     params[:name]= book.name
     params[:qtd]=book.qtd
@@ -23,7 +22,6 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_id]=book.id
     params[:http_action] = "post"
     params[:request_type] ="lend"
     params[:book] = book.name
@@ -35,8 +33,6 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_id]=book.id
-    params[:client_id]=client.id
     params[:http_action] = "post"
     params[:request_type] ="return"
     params[:book] = book.name
@@ -57,37 +53,19 @@ class LibraryProxy
 end
 
 def teste
-
-  puts "-------Biblioteca - Lado Clinte -------"
-  puts "-Insira o nome do livro e sua quantidade:"
-  name= gets.chomp!
-  qtd= gets.chomp!
-
-  puts "-Criando Livro"
-  book = Book.new(name,qtd)
+  book = Book.new("Tres Porquinhos",20)
 
   l = LibraryProxy.new
 
-  puts "\n\n-Adicionando livro ao App Remoto"
-  puts "-O app remoto respondeu:"
+<<<<<<< Updated upstream
   l.add_book(book)
 
-  puts "\n\n-Alugando livro"
-  puts "-O app remoto respondeu:"
   l.rent_book(book)
 
-  puts "\n\n-Retornando livro ao App Remoto"
-  puts "-O app remoto respondeu:"
   l.return_book(book)
-
-  puts "\n\n-Alugando livro novamente"
-  puts "-O app remoto respondeu:"
-  l.rent_book(book)
-
-  puts "\n\n-Alugando um livro existentee"
-  puts "-O app remoto respondeu:"
-  l.rent_book(Book.new("LivroUm", 10))
-
+=======
+  puts l.add_book(book)
+>>>>>>> Stashed changes
 end
 
 teste

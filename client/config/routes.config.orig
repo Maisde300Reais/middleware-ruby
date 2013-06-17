@@ -1,0 +1,25 @@
+GET /library/get_all_books library#get_all_books
+POST /library/rent_book library#rent_book
+POST /library/add_client library#add_client
+POST /library/add_book library#add_book
+POST /library/return_book library#return_book
+GET /academy/list_trainings academy#list_trainings
+POST /academy/add_training academy#add_training
+POST /academy/add_user academy#add_user
+GET /store/get_all store#get_all
+POST /store/add_user store#add_user
+POST /store/add_product store#add_product
+POST /store/auth store#auth
+<<<<<<< Updated upstream
+GET /igor-app-pd/ igor-app-pd#hue
+PUT /igor-app-pd/library igor-app-pd#library
+POST /igor-app-pd/library igor-app-pd#library
+GET /igor-app-pd/library igor-app-pd#library
+DELETE /igor-app-pd/library igor-app-pd#library
+PUT /roger-pd-app/snackbar roger-pd-app#snackbar
+POST /roger-pd-app/snackbar roger-pd-app#snackbar
+GET /roger-pd-app/snackbar roger-pd-app#snackbar
+DELETE /roger-pd-app/snackbar roger-pd-app#snackbar
+=======
+PUT /igor-app-pd/library igor-app-pd#library
+>>>>>>> Stashed changes
