@@ -42,7 +42,7 @@ class Requestor
     # @qos_observer = Quality_of_Service_Observer.instance
     @invocation_intercepters = []
 
-    #@invocation_intercepters << AuthInterceptor
+    @invocation_intercepters << AuthInterceptor
 
     mid = Middleware.instance
     mid.register_lookup "localhost:2000"
