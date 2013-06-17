@@ -16,7 +16,7 @@ class LibraryProxy
     params[:name]= book.name
     params[:qtd]=book.qtd
 
-    p @r.invoke("igor-app-pd", "no_method", params)
+    p @r.invoke("igor-app-pd", "library", params)
   end
 
   def rent_book(book)
