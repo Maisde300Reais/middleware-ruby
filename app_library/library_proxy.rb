@@ -8,7 +8,7 @@ class LibraryProxy
   def initialize
     @r = Requestor.instance
   end
-  
+
   #cada método deve simplesmente traduzir de chamadas normais para chamadas
   #do requestor
 
@@ -70,5 +70,3 @@ def test
   lib.rent_book client, book
   lib.return_book client, book
 end
-
-test
