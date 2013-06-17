@@ -11,7 +11,6 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_name] = book.name
     params[:http_action] = "put"
     params[:name]= book.name
     params[:qtd]=book.qtd
@@ -23,23 +22,23 @@ class LibraryProxy
 
     params={} 
 
-    params[:book_id]=book.id
     params[:http_action] = "post"
+    params[:request_type] ="lend"
+    params[:book] = book.name
 
-    p @r.invoke("igor-app-pd", "rent_book", params)
+    p @r.invoke("igor-app-pd", "library", params)
   end
 
   def return_book(book)
 
     params={} 
 
-    params[:book_id]=book.id
-    params[:client_id]=client.id
     params[:http_action] = "post"
+    params[:request_type] ="return"
+    params[:book] = book.name
 
-    p @r.invoke("library", "return_book", params)
+    p @r.invoke("igor-app-pd", "library", params)
   end
-
 end
 
 def teste
@@ -47,5 +46,11 @@ def teste
 
   l = LibraryProxy.new
 
-  puts l.add_book(book)
+  l.add_book(book)
+
+  l.rent_book(book)
+
+  l.return_book(book)
 end
+
+teste
