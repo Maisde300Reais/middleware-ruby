@@ -12,11 +12,11 @@ class LibraryProxy
     params={} 
 
     params[:book_name] = book.name
-    params[:http_action] = "post"
-    params["name"]= book.name
-    params["qtd"]=book.qtd
+    params[:http_action] = "put"
+    params[:name]= book.name
+    params[:qtd]=book.qtd
 
-    p @r.invoke("igor-app-pd", "", params)
+    p @r.invoke("igor-app-pd", "no_method", params)
   end
 
   def rent_book(book)
