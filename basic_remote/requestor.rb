@@ -79,4 +79,4 @@ class Requestor
   end
 end
 
-puts Requestor.instance.invoke("igor-app-id", "hue", { http_action: "get" })
+#puts Requestor.instance.invoke("igor-app-id", "hue", { http_action: "get" })

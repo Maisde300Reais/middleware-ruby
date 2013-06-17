@@ -1,6 +1,4 @@
 require_relative '../basic_remote/requestor'
-require_relative 'library'
-require_relative 'client'
 require_relative 'book'
 
 class LibraryProxy
@@ -9,42 +7,29 @@ class LibraryProxy
     @r = Requestor.instance
   end
 
-  #cada método deve simplesmente traduzir de chamadas normais para chamadas
-  #do requestor
-
   def add_book(book)
 
     params={} 
 
     params[:book_name] = book.name
     params[:http_action] = "post"
+    params["name"]= book.name
+    params["qtd"]=book.qtd
 
-    p @r.invoke("library", "add_book", params)
+    p @r.invoke("igor-app-pd", "", params)
   end
 
-  def add_client(client)
-
-    params={} 
-    
-    params[:client_id] = client.id
-    params[:client_name] = client.name
-    params[:http_action] = "post"
-
-    p @r.invoke("library", "add_client", params)
-  end
-
-  def rent_book(client, book)
+  def rent_book(book)
 
     params={} 
 
     params[:book_id]=book.id
-    params[:client_id]=client.id
     params[:http_action] = "post"
 
-    p @r.invoke("library", "rent_book", params)
+    p @r.invoke("igor-app-pd", "rent_book", params)
   end
 
-  def return_book(client, book)
+  def return_book(book)
 
     params={} 
 
@@ -57,15 +42,10 @@ class LibraryProxy
 
 end
 
-def test
-  book= Book.new("1", "Chapeuzinho Vermelho")
+def teste
+  book = Book.new("Chapeuzinho Vermelho",20)
 
-  client= Client.new("1", "Igor")
+  l = LibraryProxy.new
 
-  lib = LibraryProxy.new
-
-  lib.add_client client
-  lib.add_book book
-  lib.rent_book client, book
-  lib.return_book client, book
+  puts l.add_book(book)
 end
